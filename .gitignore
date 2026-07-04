@@ -1,0 +1,47 @@
+# Python cache and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments and editor/system files
+.env
+.env.*
+.venv/
+venv/
+env/
+.idea/
+.vscode/
+.DS_Store
+
+# Experiment outputs and generated artifacts
+results/
+repro_smoke/
+wandb/
+runs/
+logs/
+*.log
+*.npy
+*.npz
+
+# Datasets and model weights
+datasets/
+datasets_canonical/
+data/
+checkpoints/
+*.pth
+*.pth.tar
+*.pt
+*.ckpt
+*.onnx
+
+# Temporary files
+tmp/
+temp/
+*.tmp

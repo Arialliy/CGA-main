@@ -1,0 +1,25 @@
+fair_paired_comparison:
+- name: MSHNetOHEM
+  status: same-repo paired baseline
+  comparison_use: Fair paired comparison against MSHNetCGA under the frozen dataset,
+    seed, epoch, and threshold protocol.
+  numbers_policy: Use only current-repo regenerated metrics.
+literature_only_threats:
+- name: MSHNet / SLS
+  status: closest architecture and supervision threat
+  comparison_use: Discuss as prior-art motivation and reviewer threat.
+  numbers_policy: Do not present literature numbers as same-protocol fair comparison.
+- name: ISNet / shape-edge reconstruction
+  status: shape-aware IRSTD threat
+  comparison_use: Separate from the current-repo paired MSHNetOHEM comparison.
+  numbers_policy: Literature-only unless reproduced in this repository under the frozen
+    protocol.
+- name: PConv + SD Loss
+  status: loss/design threat
+  comparison_use: Use to frame component/shape regularization differences.
+  numbers_policy: Literature-only unless reproduced in this repository under the frozen
+    protocol.
+- name: Other IRSTD SOTA
+  status: broad benchmark threat
+  comparison_use: Mention only as external context, not as a claim of superiority.
+  numbers_policy: No SOTA claim from cross-paper numbers.

@@ -1,0 +1,85 @@
+datasets:
+  NUDT-SIRST:
+    root_name: NUDT-SIRST
+    image_dir: images
+    mask_dir: masks
+    list_dir: img_idx
+    splits:
+      train: train_NUDT-SIRST.txt
+      test: test_NUDT-SIRST.txt
+      hcval: hcval_NUDT-SIRST.txt
+    expected_counts:
+      train: null
+      test: null
+      hcval: null
+    item_format:
+      list_has_extension: false
+      image_suffix: .png
+      mask_suffix: .png
+      id_prefix: ""
+      id_suffix: ""
+      strip_extension_from_list_item: true
+    mask_policy:
+      type: binary
+      allowed_values: [0, 255]
+      canonical_required: false
+    claim_policy:
+      role: main_evidence_after_three_seed_pass
+      external_validation_claim_allowed: false
+      benchmark_validation_claim_allowed: false
+
+  NUAA-SIRST:
+    root_name: NUAA-SIRST
+    image_dir: images
+    mask_dir: masks
+    list_dir: img_idx
+    splits:
+      train: train_NUAA-SIRST.txt
+      test: test_NUAA-SIRST.txt
+    expected_counts:
+      train: null
+      test: null
+      hcval: null
+    item_format:
+      list_has_extension: false
+      image_suffix: .png
+      mask_suffix: .png
+      id_prefix: ""
+      id_suffix: ""
+      strip_extension_from_list_item: true
+    mask_policy:
+      type: binary
+      allowed_values: [0, 255]
+      canonical_required: false
+    claim_policy:
+      role: blocked_until_integrity_preflight_pass
+      external_validation_claim_allowed: false
+      benchmark_validation_claim_allowed: false
+
+  IRSTD-1K:
+    root_name: IRSTD-1K
+    image_dir: images
+    mask_dir: masks
+    list_dir: img_idx
+    splits:
+      train: train_IRSTD-1K.txt
+      test: test_IRSTD-1K.txt
+    expected_counts:
+      train: null
+      test: null
+      hcval: null
+    item_format:
+      list_has_extension: false
+      image_suffix: .png
+      mask_suffix: .png
+      id_prefix: ""
+      id_suffix: ""
+      strip_extension_from_list_item: true
+    mask_policy:
+      type: canonical_binary
+      allowed_values: [0, 255]
+      canonical_required: true
+    claim_policy:
+      role: supervised_characterization_only_after_canonical_preflight_and_target_audit
+      external_validation_claim_allowed: false
+      benchmark_validation_claim_allowed: false

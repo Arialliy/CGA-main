@@ -1,0 +1,18 @@
+{
+  "model_name": "MSHNetCGA",
+  "baseline_name": "MSHNetOHEM",
+  "epochs": 400,
+  "threshold": 0.5,
+  "patch_size": 256,
+  "batch_size": 8,
+  "lr": 0.0005,
+  "ohem_ratio": 0.01,
+  "loss": {
+    "lambda_center": 0.05,
+    "lambda_boundary": 0.03,
+    "lambda_scale": 0.02,
+    "lambda_peak": 0.03,
+    "start_epoch": 1,
+    "ramp_epochs": 40
+  }
+}
