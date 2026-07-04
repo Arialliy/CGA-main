@@ -8,7 +8,7 @@ from pathlib import Path
 import torch
 
 from loss import build_loss
-from model.CGA_MSHNet import MSHNetCGA, extract_final_logit
+from model.CGA_MSHNet import extract_final_logit
 from net import build_model
 
 
@@ -30,7 +30,7 @@ def main() -> None:
         eval_out = model(x, warm_flag=False, return_dict=True)
         eval_logit = extract_final_logit(eval_out)
     checks = {
-        "is_mshnet_cga": isinstance(model, MSHNetCGA),
+        "uses_real_cga_wrapper": out.get("regularizer_meta", {}).get("regularizer_impl") == "center_boundary_scale_peak",
         "train_logit_shape_ok": list(logit.shape) == [2, 1, args.height, args.width],
         "eval_logit_shape_ok": list(eval_logit.shape) == [2, 1, args.height, args.width],
         "aux_keys_present": all(k in out for k in ["cga_center_logit", "cga_boundary_logit", "cga_scale_logit", "cga_peak_logit"]),

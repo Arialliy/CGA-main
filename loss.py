@@ -1,4 +1,4 @@
-"""Losses for MSHNet / MSHNetCGA.
+"""Losses for explicit-backbone CGA experiments.
 
 This file is intentionally self-contained and keeps CGA supervision strictly in
 training.  Evaluation should use only the final logit.
@@ -13,6 +13,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from utils.cga_targets import CGATargetConfig, build_cga_targets
+
+REQUIRED_CGA_LOGITS = (
+    "cga_center_logit",
+    "cga_boundary_logit",
+    "cga_scale_logit",
+    "cga_peak_logit",
+)
 
 
 def _resize_like(target: torch.Tensor, ref: torch.Tensor) -> torch.Tensor:
@@ -126,11 +133,27 @@ def _ramp_weight(epoch: int, start_epoch: int, ramp_epochs: int) -> float:
     return min(1.0, max(0.0, float(epoch - start_epoch + 1) / float(ramp_epochs)))
 
 
-class MSHNetCGALoss(nn.Module):
-    def __init__(self, cfg: CGALossConfig | None = None, target_cfg: CGATargetConfig | None = None) -> None:
+def _require_cga_logits(output: dict[str, Any]) -> None:
+    missing = [k for k in REQUIRED_CGA_LOGITS if k not in output or output[k] is None]
+    if missing:
+        raise KeyError(
+            "Paper-mode CGA requires all four auxiliary logits: "
+            f"{REQUIRED_CGA_LOGITS}. Missing: {missing}"
+        )
+
+
+class CGALoss(nn.Module):
+    def __init__(
+        self,
+        cfg: CGALossConfig | None = None,
+        target_cfg: CGATargetConfig | None = None,
+        *,
+        strict_cga_heads: bool = True,
+    ) -> None:
         super().__init__()
         self.cfg = cfg or CGALossConfig()
         self.target_cfg = target_cfg or CGATargetConfig()
+        self.strict_cga_heads = bool(strict_cga_heads)
         self.base_loss = MSHNetOHEMLoss(
             ohem_ratio=self.cfg.ohem_ratio,
             lambda_iou=self.cfg.lambda_iou,
@@ -147,7 +170,11 @@ class MSHNetCGALoss(nn.Module):
 
     def forward(self, output: dict[str, torch.Tensor], target: torch.Tensor, epoch: int = 0) -> dict[str, torch.Tensor]:
         if not isinstance(output, dict):
+            if self.strict_cga_heads:
+                raise TypeError("Paper-mode CGA requires dict output with explicit auxiliary logits.")
             return self.base_loss(output, target, epoch=epoch)
+        if self.strict_cga_heads:
+            _require_cga_logits(output)
         final_logit = extract_final_logit(output)
         target = _resize_like(target, final_logit)
         base = self.base_loss(output, target, epoch=epoch)
@@ -178,13 +205,51 @@ class MSHNetCGALoss(nn.Module):
         }
 
 
-def build_loss(name: str = "MSHNetCGA", **kwargs) -> nn.Module:
-    name_l = name.lower()
-    if "cga" in name_l:
-        cfg = CGALossConfig(**{k: v for k, v in kwargs.items() if k in CGALossConfig.__annotations__})
-        return MSHNetCGALoss(cfg)
+MSHNetCGALoss = CGALoss
+
+
+def build_loss(
+    name: str | None = "MSHNet",
+    *,
+    use_cga: bool | None = None,
+    ohem_ratio: float = 0.01,
+    lambda_iou: float = 1.0,
+    mshnet_warm_epoch: int | None = None,
+    warm_epoch: int | None = None,
+    cga_start_epoch: int = 1,
+    cga_ramp_epochs: int = 40,
+    lambda_center: float = 0.05,
+    lambda_boundary: float = 0.03,
+    lambda_scale: float = 0.02,
+    lambda_peak: float = 0.03,
+    strict_cga_heads: bool = True,
+    **kwargs: Any,
+) -> nn.Module:
+    name_l = "" if name is None else str(name).lower()
+    if use_cga is None:
+        use_cga = "cga" in name_l
+    if mshnet_warm_epoch is None:
+        mshnet_warm_epoch = int(warm_epoch if warm_epoch is not None else kwargs.get("warm_epoch", 5))
+    if "start_epoch" in kwargs:
+        cga_start_epoch = int(kwargs["start_epoch"])
+    if "ramp_epochs" in kwargs:
+        cga_ramp_epochs = int(kwargs["ramp_epochs"])
+
+    if use_cga:
+        cfg = CGALossConfig(
+            lambda_center=float(lambda_center),
+            lambda_boundary=float(lambda_boundary),
+            lambda_scale=float(lambda_scale),
+            lambda_peak=float(lambda_peak),
+            start_epoch=int(cga_start_epoch),
+            ramp_epochs=int(cga_ramp_epochs),
+            ohem_ratio=float(ohem_ratio),
+            lambda_iou=float(lambda_iou),
+            warm_epoch=int(mshnet_warm_epoch),
+        )
+        return CGALoss(cfg, strict_cga_heads=strict_cga_heads)
     return MSHNetOHEMLoss(
-        ohem_ratio=float(kwargs.get("ohem_ratio", 0.01)),
-        lambda_iou=float(kwargs.get("lambda_iou", 1.0)),
-        warm_epoch=int(kwargs.get("warm_epoch", 5)),
+        ohem_ratio=float(ohem_ratio),
+        lambda_iou=float(lambda_iou),
+        warm_epoch=int(mshnet_warm_epoch),
     )

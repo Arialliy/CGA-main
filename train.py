@@ -1,4 +1,4 @@
-"""Training entry point for MSHNetOHEM and MSHNetCGA."""
+"""Training entry point for controlled fail-closed CGA experiments."""
 from __future__ import annotations
 
 import argparse
@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 
 from dataset import TrainSetLoader
 from loss import build_loss
-from net import build_model
+from net import build_model, resolve_model_config
 
 
 def set_seed(seed: int) -> None:
@@ -31,7 +31,11 @@ def _loss_value(loss_out):
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser("Train MSHNet/CGA-v2")
-    p.add_argument("--model_name", default="MSHNetCGA")
+    p.add_argument("--model_name", default=None)
+    p.add_argument("--backbone_name", default="mshnet", choices=["mshnet", "dnanet", "alcnet", "acm", "isnet"])
+    p.add_argument("--use_cga", action="store_true")
+    p.add_argument("--evidence_mode", default="paper", choices=["paper", "smoke"])
+    p.add_argument("--protocol", default="controlled", choices=["controlled", "official"])
     p.add_argument("--dataset_dir", default="datasets")
     p.add_argument("--dataset_name", default="NUDT-SIRST")
     p.add_argument("--seed", type=int, default=42)
@@ -40,7 +44,16 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--patch_size", type=int, default=256)
     p.add_argument("--lr", type=float, default=5e-4)
     p.add_argument("--num_workers", type=int, default=4)
-    p.add_argument("--warm_epoch", type=int, default=5)
+    p.add_argument("--warm_epoch", type=int, default=None, help="Deprecated alias for --mshnet_warm_epoch")
+    p.add_argument("--mshnet_warm_epoch", type=int, default=None)
+    p.add_argument("--cga_start_epoch", type=int, default=1)
+    p.add_argument("--cga_ramp_epochs", type=int, default=40)
+    p.add_argument("--lambda_center", type=float, default=0.05)
+    p.add_argument("--lambda_boundary", type=float, default=0.03)
+    p.add_argument("--lambda_scale", type=float, default=0.02)
+    p.add_argument("--lambda_peak", type=float, default=0.03)
+    p.add_argument("--aux_hidden_channels", type=int, default=32)
+    p.add_argument("--allow_fallback_regularizer", action="store_true")
     p.add_argument("--ohem_ratio", type=float, default=0.01)
     p.add_argument("--output_dir", default="results/official")
     p.add_argument("--resume", default="")
@@ -48,18 +61,61 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+def _run_model_name(model_name: str | None, backbone_name: str, use_cga: bool) -> str:
+    if model_name:
+        return str(model_name)
+    return f"{backbone_name}_cga" if use_cga else backbone_name
+
+
 def main() -> None:
     args = parse_args()
+    if args.mshnet_warm_epoch is None:
+        args.mshnet_warm_epoch = int(args.warm_epoch if args.warm_epoch is not None else 5)
+    if args.evidence_mode == "paper" and args.allow_fallback_regularizer:
+        raise RuntimeError(
+            "Fallback regularizer is forbidden for paper evidence. "
+            "Use --evidence_mode smoke for smoke-only plumbing tests."
+        )
+    if args.evidence_mode == "paper" and args.protocol != "controlled":
+        print("[WARN] official/literature protocol is contextual only; do not use it as main CGA claim.")
+
+    backbone_name, use_cga = resolve_model_config(
+        args.model_name,
+        backbone_name=args.backbone_name,
+        use_cga=args.use_cga,
+    )
+    run_model_name = _run_model_name(args.model_name, backbone_name, use_cga)
+
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    out_dir = Path(args.output_dir) / args.model_name / f"seed{args.seed}" / args.dataset_name
+    out_dir = Path(args.output_dir) / run_model_name / f"seed{args.seed}" / args.dataset_name
     out_dir.mkdir(parents=True, exist_ok=True)
 
     ds = TrainSetLoader(args.dataset_dir, args.dataset_name, patch_size=args.patch_size)
     loader = DataLoader(ds, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, drop_last=False)
 
-    model = build_model(args.model_name).to(device)
-    criterion = build_loss(args.model_name, ohem_ratio=args.ohem_ratio, warm_epoch=args.warm_epoch).to(device)
+    model = build_model(
+        model_name=args.model_name,
+        backbone_name=backbone_name,
+        use_cga=use_cga,
+        evidence_mode=args.evidence_mode,
+        input_channels=1,
+        aux_hidden_channels=args.aux_hidden_channels,
+        allow_fallback_regularizer=args.allow_fallback_regularizer,
+    ).to(device)
+    criterion = build_loss(
+        args.model_name or backbone_name,
+        use_cga=use_cga,
+        ohem_ratio=args.ohem_ratio,
+        mshnet_warm_epoch=args.mshnet_warm_epoch,
+        cga_start_epoch=args.cga_start_epoch,
+        cga_ramp_epochs=args.cga_ramp_epochs,
+        lambda_center=args.lambda_center,
+        lambda_boundary=args.lambda_boundary,
+        lambda_scale=args.lambda_scale,
+        lambda_peak=args.lambda_peak,
+        strict_cga_heads=(args.evidence_mode == "paper" and use_cga),
+    ).to(device)
     optim = torch.optim.Adam(model.parameters(), lr=args.lr)
     start_epoch = 1
     if args.resume:
@@ -77,7 +133,10 @@ def main() -> None:
             img = img.float().to(device)
             mask = mask.float().to(device)
             optim.zero_grad(set_to_none=True)
-            output = model(img, warm_flag=(epoch <= args.warm_epoch), return_dict=True)
+            forward_kwargs = {}
+            if backbone_name == "mshnet":
+                forward_kwargs["mshnet_warm_flag"] = epoch <= args.mshnet_warm_epoch
+            output = model(img, **forward_kwargs)
             loss_out = criterion(output, mask, epoch=epoch)
             loss = _loss_value(loss_out)
             loss.backward()
@@ -88,18 +147,42 @@ def main() -> None:
         if stats:
             for key in stats[0].keys():
                 mean_stats[key] = float(np.mean([s.get(key, 0.0) for s in stats]))
-        mean_stats.update({"epoch": epoch, "dataset": args.dataset_name, "model": args.model_name, "seed": args.seed})
+        evidence_meta = {
+            "epoch": epoch,
+            "dataset": args.dataset_name,
+            "model": run_model_name,
+            "backbone": backbone_name,
+            "use_cga": bool(use_cga),
+            "regularizer_impl": "center_boundary_scale_peak" if use_cga else "none",
+            "evidence_mode": args.evidence_mode,
+            "paper_evidence_allowed": bool(args.evidence_mode == "paper" and not args.allow_fallback_regularizer),
+            "protocol": args.protocol,
+            "seed": args.seed,
+            "mshnet_warm_epoch": args.mshnet_warm_epoch,
+            "cga_start_epoch": args.cga_start_epoch,
+            "cga_ramp_epochs": args.cga_ramp_epochs,
+        }
+        mean_stats.update(evidence_meta)
         with open(log_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(mean_stats, sort_keys=True) + "\n")
         if epoch == args.epochs or epoch % args.save_every == 0:
             torch.save({
                 "epoch": epoch,
-                "model_name": args.model_name,
+                "model_name": run_model_name,
+                "backbone": backbone_name,
+                "use_cga": bool(use_cga),
+                "regularizer_impl": "center_boundary_scale_peak" if use_cga else "none",
+                "evidence_mode": args.evidence_mode,
+                "paper_evidence_allowed": bool(args.evidence_mode == "paper" and not args.allow_fallback_regularizer),
+                "protocol": args.protocol,
                 "dataset": args.dataset_name,
                 "seed": args.seed,
+                "mshnet_warm_epoch": args.mshnet_warm_epoch,
+                "cga_start_epoch": args.cga_start_epoch,
+                "cga_ramp_epochs": args.cga_ramp_epochs,
                 "state_dict": model.state_dict(),
                 "optimizer": optim.state_dict(),
-            }, out_dir / f"{args.model_name}_{epoch}.pth.tar")
+            }, out_dir / f"{run_model_name}_{epoch}.pth.tar")
         print(json.dumps(mean_stats, sort_keys=True))
 
 

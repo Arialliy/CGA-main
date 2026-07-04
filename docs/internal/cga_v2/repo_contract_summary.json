@@ -2,9 +2,9 @@
   "checks": {
     "aux_keys_present": true,
     "eval_logit_shape_ok": true,
-    "is_mshnet_cga": true,
     "loss_finite": true,
-    "train_logit_shape_ok": true
+    "train_logit_shape_ok": true,
+    "uses_real_cga_wrapper": true
   },
   "gate": "Gate-CGA-v2-repo-contract",
   "gate_pass": true
