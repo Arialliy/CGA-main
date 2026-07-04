@@ -18,6 +18,8 @@ def test_factory_builds_mshnet_cga_wrapper_with_real_cga_heads():
     out = model(torch.randn(1, 1, 64, 64), mshnet_warm_flag=True)
 
     assert out["regularizer_meta"]["regularizer_impl"] == "center_boundary_scale_peak"
+    assert out["regularizer_meta"]["fallback_regularizer_used"] is False
+    assert "paper_evidence_allowed" not in out["regularizer_meta"]
     for key in ("cga_center_logit", "cga_boundary_logit", "cga_scale_logit", "cga_peak_logit"):
         assert key in out
         assert out[key].shape == (1, 1, 64, 64)

@@ -31,6 +31,8 @@ def main() -> None:
         eval_logit = extract_final_logit(eval_out)
     checks = {
         "uses_real_cga_wrapper": out.get("regularizer_meta", {}).get("regularizer_impl") == "center_boundary_scale_peak",
+        "fallback_regularizer_not_used": out.get("regularizer_meta", {}).get("fallback_regularizer_used") is False,
+        "wrapper_does_not_claim_paper_evidence": "paper_evidence_allowed" not in out.get("regularizer_meta", {}),
         "train_logit_shape_ok": list(logit.shape) == [2, 1, args.height, args.width],
         "eval_logit_shape_ok": list(eval_logit.shape) == [2, 1, args.height, args.width],
         "aux_keys_present": all(k in out for k in ["cga_center_logit", "cga_boundary_logit", "cga_scale_logit", "cga_peak_logit"]),

@@ -54,7 +54,7 @@ class CGAWrapper(nn.Module):
             {
                 "use_cga": True,
                 "regularizer_impl": self.REGULARIZER_IMPL,
-                "paper_evidence_allowed": True,
+                "fallback_regularizer_used": False,
             }
         )
         return output

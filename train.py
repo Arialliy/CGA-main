@@ -29,6 +29,34 @@ def _loss_value(loss_out):
     return loss_out["total"] if isinstance(loss_out, dict) else loss_out
 
 
+def compute_paper_evidence_allowed(
+    *,
+    evidence_mode: str,
+    p1_preflight_passed: bool,
+    p1a_hcval_source_audit_passed: bool,
+    fallback_regularizer_used: bool,
+) -> bool:
+    if evidence_mode == "smoke":
+        return False
+    if evidence_mode != "paper":
+        raise ValueError(f"Unknown evidence_mode={evidence_mode!r}")
+    return bool(
+        p1_preflight_passed
+        and p1a_hcval_source_audit_passed
+        and not fallback_regularizer_used
+    )
+
+
+def _output_fallback_regularizer_used(output) -> bool:
+    if not isinstance(output, dict):
+        return False
+    regularizer_meta = output.get("regularizer_meta", {})
+    return bool(
+        output.get("fallback_regularizer_used", False)
+        or (isinstance(regularizer_meta, dict) and regularizer_meta.get("fallback_regularizer_used", False))
+    )
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser("Train MSHNet/CGA-v2")
     p.add_argument("--model_name", default=None)
@@ -54,6 +82,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--lambda_peak", type=float, default=0.03)
     p.add_argument("--aux_hidden_channels", type=int, default=32)
     p.add_argument("--allow_fallback_regularizer", action="store_true")
+    p.add_argument("--p1_preflight_passed", action="store_true")
+    p.add_argument("--p1a_hcval_source_audit_passed", action="store_true")
     p.add_argument("--ohem_ratio", type=float, default=0.01)
     p.add_argument("--output_dir", default="results/official")
     p.add_argument("--resume", default="")
@@ -76,6 +106,10 @@ def main() -> None:
             "Fallback regularizer is forbidden for paper evidence. "
             "Use --evidence_mode smoke for smoke-only plumbing tests."
         )
+    if args.evidence_mode == "paper" and (
+        not args.p1_preflight_passed or not args.p1a_hcval_source_audit_passed
+    ):
+        print("[WARN] paper_evidence_allowed will remain false until P1 and P1A pass.")
     if args.evidence_mode == "paper" and args.protocol != "controlled":
         print("[WARN] official/literature protocol is contextual only; do not use it as main CGA claim.")
 
@@ -129,6 +163,7 @@ def main() -> None:
     for epoch in range(start_epoch, args.epochs + 1):
         model.train()
         stats = []
+        fallback_regularizer_used = bool(args.allow_fallback_regularizer)
         for img, mask in loader:
             img = img.float().to(device)
             mask = mask.float().to(device)
@@ -137,6 +172,7 @@ def main() -> None:
             if backbone_name == "mshnet":
                 forward_kwargs["mshnet_warm_flag"] = epoch <= args.mshnet_warm_epoch
             output = model(img, **forward_kwargs)
+            fallback_regularizer_used = fallback_regularizer_used or _output_fallback_regularizer_used(output)
             loss_out = criterion(output, mask, epoch=epoch)
             loss = _loss_value(loss_out)
             loss.backward()
@@ -147,6 +183,12 @@ def main() -> None:
         if stats:
             for key in stats[0].keys():
                 mean_stats[key] = float(np.mean([s.get(key, 0.0) for s in stats]))
+        paper_evidence_allowed = compute_paper_evidence_allowed(
+            evidence_mode=args.evidence_mode,
+            p1_preflight_passed=args.p1_preflight_passed,
+            p1a_hcval_source_audit_passed=args.p1a_hcval_source_audit_passed,
+            fallback_regularizer_used=fallback_regularizer_used,
+        )
         evidence_meta = {
             "epoch": epoch,
             "dataset": args.dataset_name,
@@ -155,7 +197,10 @@ def main() -> None:
             "use_cga": bool(use_cga),
             "regularizer_impl": "center_boundary_scale_peak" if use_cga else "none",
             "evidence_mode": args.evidence_mode,
-            "paper_evidence_allowed": bool(args.evidence_mode == "paper" and not args.allow_fallback_regularizer),
+            "p1_preflight_passed": bool(args.p1_preflight_passed),
+            "p1a_hcval_source_audit_passed": bool(args.p1a_hcval_source_audit_passed),
+            "fallback_regularizer_used": bool(fallback_regularizer_used),
+            "paper_evidence_allowed": bool(paper_evidence_allowed),
             "protocol": args.protocol,
             "seed": args.seed,
             "mshnet_warm_epoch": args.mshnet_warm_epoch,
@@ -173,7 +218,10 @@ def main() -> None:
                 "use_cga": bool(use_cga),
                 "regularizer_impl": "center_boundary_scale_peak" if use_cga else "none",
                 "evidence_mode": args.evidence_mode,
-                "paper_evidence_allowed": bool(args.evidence_mode == "paper" and not args.allow_fallback_regularizer),
+                "p1_preflight_passed": bool(args.p1_preflight_passed),
+                "p1a_hcval_source_audit_passed": bool(args.p1a_hcval_source_audit_passed),
+                "fallback_regularizer_used": bool(fallback_regularizer_used),
+                "paper_evidence_allowed": bool(paper_evidence_allowed),
                 "protocol": args.protocol,
                 "dataset": args.dataset_name,
                 "seed": args.seed,

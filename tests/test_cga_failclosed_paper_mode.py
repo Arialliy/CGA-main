@@ -3,6 +3,7 @@ import torch
 
 from loss import build_loss
 from net import build_model
+from train import compute_paper_evidence_allowed
 
 
 def test_paper_mode_forbids_fallback_regularizer():
@@ -26,3 +27,36 @@ def test_cga_loss_requires_all_four_heads_in_paper_mode():
 
     with pytest.raises(KeyError, match="cga_boundary_logit"):
         criterion(output, target, epoch=1)
+
+
+def test_paper_evidence_allowed_requires_p1_p1a_and_no_fallback():
+    assert not compute_paper_evidence_allowed(
+        evidence_mode="smoke",
+        p1_preflight_passed=True,
+        p1a_hcval_source_audit_passed=True,
+        fallback_regularizer_used=False,
+    )
+    assert not compute_paper_evidence_allowed(
+        evidence_mode="paper",
+        p1_preflight_passed=False,
+        p1a_hcval_source_audit_passed=True,
+        fallback_regularizer_used=False,
+    )
+    assert not compute_paper_evidence_allowed(
+        evidence_mode="paper",
+        p1_preflight_passed=True,
+        p1a_hcval_source_audit_passed=False,
+        fallback_regularizer_used=False,
+    )
+    assert not compute_paper_evidence_allowed(
+        evidence_mode="paper",
+        p1_preflight_passed=True,
+        p1a_hcval_source_audit_passed=True,
+        fallback_regularizer_used=True,
+    )
+    assert compute_paper_evidence_allowed(
+        evidence_mode="paper",
+        p1_preflight_passed=True,
+        p1a_hcval_source_audit_passed=True,
+        fallback_regularizer_used=False,
+    )
