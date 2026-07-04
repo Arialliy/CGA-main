@@ -1,0 +1,117 @@
+\begin{thebibliography}{16}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Chen et~al.(2014)Chen, Li, Wei, Xia, and Tang}]{chen2014local}
+Chen, C. L.~P.; Li, H.; Wei, Y.; Xia, T.; and Tang, Y.~Y. 2014.
+\newblock A Local Contrast Method for Small Infrared Target Detection.
+\newblock \emph{IEEE Transactions on Geoscience and Remote Sensing}, 52(1):
+  574--581.
+
+\bibitem[{Chen et~al.(2024)Chen, Tan, Chu, Wu, Liu, and Yu}]{chen2024tciformer}
+Chen, T.; Tan, Z.; Chu, Q.; Wu, Y.; Liu, B.; and Yu, N. 2024.
+\newblock {TCI-Former}: Thermal Conduction-Inspired Transformer for Infrared
+  Small Target Detection.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, 1201--1209.
+
+\bibitem[{Dai and Wu(2017)}]{dai2017ript}
+Dai, Y.; and Wu, Y. 2017.
+\newblock Reweighted Infrared Patch-Tensor Model with Both Nonlocal and Local
+  Priors for Single-Frame Small Target Detection.
+\newblock \emph{IEEE Journal of Selected Topics in Applied Earth Observations
+  and Remote Sensing}, 10(8): 3752--3767.
+
+\bibitem[{Dai et~al.(2021{\natexlab{a}})Dai, Wu, Zhou, and
+  Barnard}]{dai2021acm}
+Dai, Y.; Wu, Y.; Zhou, F.; and Barnard, K. 2021{\natexlab{a}}.
+\newblock Asymmetric Contextual Modulation for Infrared Small Target Detection.
+\newblock In \emph{Proceedings of the IEEE Winter Conference on Applications of
+  Computer Vision (WACV)}, 949--958. IEEE.
+
+\bibitem[{Dai et~al.(2021{\natexlab{b}})Dai, Wu, Zhou, and
+  Barnard}]{dai2021alcnet}
+Dai, Y.; Wu, Y.; Zhou, F.; and Barnard, K. 2021{\natexlab{b}}.
+\newblock Attentional Local Contrast Networks for Infrared Small Target
+  Detection.
+\newblock \emph{IEEE Transactions on Geoscience and Remote Sensing}, 59(11):
+  9813--9824.
+
+\bibitem[{Li et~al.(2023)Li, Xiao, Wang, Wang, Lin, Li, An, and
+  Guo}]{li2023dnanet}
+Li, B.; Xiao, C.; Wang, L.; Wang, Y.; Lin, Z.; Li, M.; An, W.; and Guo, Y.
+  2023.
+\newblock Dense Nested Attention Network for Infrared Small Target Detection.
+\newblock \emph{IEEE Transactions on Image Processing}, 32: 1745--1758.
+
+\bibitem[{Liu et~al.(2024)Liu, Liu, Zheng, Wang, and Fu}]{liu2024sls}
+Liu, Q.; Liu, R.; Zheng, B.; Wang, H.; and Fu, Y. 2024.
+\newblock Infrared Small Target Detection with Scale and Location Sensitivity.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, 17490--17499. IEEE.
+
+\bibitem[{Wang, Zhou, and Wang(2019)}]{wang2019miss}
+Wang, H.; Zhou, L.; and Wang, L. 2019.
+\newblock Miss Detection vs. False Alarm: Adversarial Learning for Small Object
+  Segmentation in Infrared Images.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision (ICCV)}, 8508--8517.
+
+\bibitem[{Wu, Hong, and Chanussot(2023)}]{wu2023uiunet}
+Wu, X.; Hong, D.; and Chanussot, J. 2023.
+\newblock {UIU-Net}: {U-Net} in {U-Net} for Infrared Small Object Detection.
+\newblock \emph{IEEE Transactions on Image Processing}, 32: 364--376.
+
+\bibitem[{Yang et~al.(2025)Yang, Liu, Wu, Su, Hai, and Huang}]{yang2025pconv}
+Yang, J.; Liu, S.; Wu, J.; Su, X.; Hai, N.; and Huang, X. 2025.
+\newblock Pinwheel-Shaped Convolution and Scale-Based Dynamic Loss for Infrared
+  Small Target Detection.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, 9202--9210. AAAI Press.
+
+\bibitem[{Ying et~al.(2023)Ying, Liu, Wang, Li, Chen, Lin, Sheng, and
+  Zhou}]{ying2023lesps}
+Ying, X.; Liu, L.; Wang, Y.; Li, R.; Chen, N.; Lin, Z.; Sheng, W.; and Zhou, S.
+  2023.
+\newblock Mapping Degeneration Meets Label Evolution: Learning Infrared Small
+  Target Detection with Single Point Supervision.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, 15528--15538. IEEE.
+
+\bibitem[{Zhang and Peng(2019)}]{zhang2019pstnn}
+Zhang, L.; and Peng, Z. 2019.
+\newblock Infrared Small Target Detection Based on Partial Sum of the Tensor
+  Nuclear Norm.
+\newblock \emph{Remote Sensing}, 11(4): 382.
+
+\bibitem[{Zhang et~al.(2025)Zhang, Li, Gao, Guo, Gao, and
+  Zhang}]{zhang2025saist}
+Zhang, M.; Li, X.; Gao, F.; Guo, J.; Gao, X.; and Zhang, J. 2025.
+\newblock {SAIST}: Segment Any Infrared Small Target Model Guided by
+  Contrastive Language-Image Pretraining.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, 9549--9558.
+
+\bibitem[{Zhang et~al.(2022{\natexlab{a}})Zhang, Yue, Zhang, Li, and
+  Gao}]{zhang2022fc3net}
+Zhang, M.; Yue, K.; Zhang, J.; Li, Y.; and Gao, X. 2022{\natexlab{a}}.
+\newblock Exploring Feature Compensation and Cross-Level Correlation for
+  Infrared Small Target Detection.
+\newblock In \emph{Proceedings of the 30th ACM International Conference on
+  Multimedia}, 1857--1865.
+
+\bibitem[{Zhang et~al.(2022{\natexlab{b}})Zhang, Zhang, Yang, Bai, Zhang, and
+  Guo}]{zhang2022isnet}
+Zhang, M.; Zhang, R.; Yang, Y.; Bai, H.; Zhang, J.; and Guo, J.
+  2022{\natexlab{b}}.
+\newblock {ISNet}: Shape Matters for Infrared Small Target Detection.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, 867--876. IEEE.
+
+\bibitem[{Zhang et~al.(2023)Zhang, Li, Cao, Pu, and Peng}]{zhang2023agpcnet}
+Zhang, T.; Li, L.; Cao, S.; Pu, T.; and Peng, Z. 2023.
+\newblock Attention-Guided Pyramid Context Networks for Detecting Infrared
+  Small Target under Complex Background.
+\newblock \emph{IEEE Transactions on Aerospace and Electronic Systems}, 59(4):
+  4250--4261.
+
+\end{thebibliography}

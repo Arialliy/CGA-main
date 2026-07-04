@@ -114,6 +114,7 @@ def main() -> None:
         "epoch": checkpoint_epoch,
         "checkpoint_epoch": checkpoint_epoch,
         "threshold": args.threshold,
+        "threshold_selection": "fixed_predeclared",
         "checkpoint": str(args.checkpoint),
         "prediction_dir": str(pred_dir),
     })
