@@ -1,0 +1,306 @@
+\documentclass[letterpaper]{article}
+\usepackage[submission]{aaai2027}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+\setcounter{secnumdepth}{0}
+
+\title{Component-Geometry Regularization for Infrared Small Target Detection}
+\author{Anonymous Submission}
+\affiliations{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Infrared small target detection requires recovering tiny, low-contrast objects from structured clutter while avoiding fragmented detections and false alarms. Existing deep models have improved dense mask prediction, but their training objectives usually supervise the final mask without explicitly regularizing the geometry of individual foreground components. We present CGA-v2, a training-time component-geometry regularizer for MSHNet-style infrared small target detection. CGA-v2 derives deterministic center, boundary, scale, and peak targets from connected foreground components and attaches four auxiliary heads to an explicitly declared decoder feature. These heads are used only during training; inference remains unchanged and uses only the original final mask logit with a fixed threshold. This design separates component-level geometric supervision from test-time prediction changes, enabling a controlled paired comparison against the MSHNetOHEM baseline. The current manuscript draft reports the completed current-repository MSHNetOHEM seed42 epoch400 baseline and defines the evidence protocol for the paired CGA evaluation. CGA effectiveness claims, multi-seed robustness, and ablation conclusions are reserved until the matching epoch400 CGA runs and fixed-threshold evaluations are complete.
+\end{abstract}
+
+\section{Introduction}
+
+Single-frame infrared small target detection (IRSTD) aims to recover small, dim target masks from infrared imagery. It is important for long-range sensing, maritime monitoring, aerial surveillance, and search systems where targets may occupy only a few pixels. The task differs from generic semantic segmentation because foreground evidence is sparse, object texture is weak, target boundaries are ambiguous, and structured background clutter can produce target-like responses. Classical local-contrast and low-rank formulations exploit this structure through handcrafted priors \citep{chen2014local,dai2017ript,zhang2019pstnn}, while modern neural methods learn dense predictors and multi-scale representations for the same sparse-object regime \citep{wang2019miss,dai2021acm,dai2021alcnet,li2023dnanet}.
+
+Recent IRSTD models increasingly encode task-specific structure instead of treating the task as ordinary binary segmentation. Dense nested interaction preserves small objects through repeated high-low feature exchange \citep{li2023dnanet}; shape reconstruction emphasizes edges and target extent \citep{zhang2022isnet}; nested U-shaped feature aggregation improves local-global interaction \citep{wu2023uiunet}; point-supervised label evolution studies how target masks emerge from weak labels \citep{ying2023lesps}; and scale/location-sensitive supervision directly addresses target size and position \citep{liu2024sls}. These methods suggest that where a target component is, how large it is, how its boundary is represented, and how compactly it activates are part of the detection signal rather than incidental annotation details.
+
+The remaining question is how to inject component-level geometry into a strong mask detector without changing the final inference path or making the evidence ambiguous. Adding post-processing, auxiliary predictions at test time, threshold search, or implicit tensor parsing can make an improvement difficult to attribute. If a method is presented as a training regularizer, the paper should show that the original final mask predictor improves under a fixed evaluation path, not that an extra test-time decision rule or a favorable threshold produces better numbers.
+
+We propose CGA-v2, a component-geometry regularization framework for MSHNet-style IRSTD. CGA-v2 keeps the MSHNet final logit as the only inference output and adds four training-only auxiliary heads for center, boundary, scale, and peak supervision. The detector adapter must explicitly declare the final logit and the selected CGA feature, the wrapper must expose all four auxiliary logits, and paper-mode loss construction fails if any required head is absent. This fail-closed design makes the method boundary auditable: CGA-v2 is a training-time regularizer, not a different test-time detector.
+
+This paper makes three contributions. First, it formulates component geometry as deterministic auxiliary supervision for infrared small target detection. For each connected foreground component, CGA-v2 constructs center, boundary, scale, and peak targets without using dataset-specific labels, image identifiers, or hard-clutter annotations. Second, it implements CGA-v2 as a training-only regularizer for MSHNet-style detectors. All reported predictions are produced only from the original final logit, with auxiliary heads ignored at inference. Third, it defines a controlled evidence protocol for evaluating whether component-geometry regularization improves the final mask predictor itself. The protocol fixes the dataset split, checkpoint epoch, threshold, final-logit evaluation path, and hard-clutter diagnostic split before computing paired deltas.
+
+\section{Related Work}
+
+\subsection{Infrared Small Target Detection}
+
+IRSTD has a long history of methods that separate targets from structured backgrounds using local contrast, sparsity, and low-rank assumptions. Local contrast methods amplify target-background differences \citep{chen2014local}, while patch-tensor and nuclear-norm formulations model background redundancy and target sparsity \citep{dai2017ript,zhang2019pstnn}. These approaches make the small-target prior explicit, but they rely on handcrafted assumptions and often struggle when clutter and targets share local statistics.
+
+Deep IRSTD models replace handcrafted separation with learned dense prediction while retaining task-specific inductive biases. ACM introduces asymmetric contextual modulation for exchanging global context and low-level detail \citep{dai2021acm}. ALCNet combines local contrast with attention \citep{dai2021alcnet}. DNANet develops dense nested interaction and contributes the NUDT-SIRST benchmark \citep{li2023dnanet}. Later models strengthen feature compensation, pyramid context, transformer-style interaction, or nested feature aggregation for complex backgrounds \citep{zhang2022fc3net,zhang2023agpcnet,chen2024tciformer,wu2023uiunet}. CGA-v2 is not positioned as a new backbone family. It regularizes a fixed MSHNet-style detector so that component geometry shapes training while the mask inference path remains unchanged.
+
+\subsection{Shape-, Scale-, and Location-Aware Supervision}
+
+Shape-, scale-, and location-aware supervision is the closest line of work to CGA-v2. ISNet shows that target shape and edge reconstruction matter for infrared small targets \citep{zhang2022isnet}. MSHNet with scale and location sensitivity is the closest architectural and supervision threat because it explicitly targets scale and position in the same task family \citep{liu2024sls}. PConv with SD Loss further studies spatial pixel distribution and scale-dependent loss weighting \citep{yang2025pconv}. CGA-v2 differs by decomposing regularization into four connected-component-derived targets and by making the evidence contract part of the method boundary: auxiliary heads are training-only, and all reported numbers must come from the final logit under a fixed threshold.
+
+\subsection{Weak and Foundation-Model Supervision}
+
+Weakly supervised and foundation-model-driven IRSTD further show that target geometry can be separated from dense mask annotation. LESPS studies how point labels can evolve into mask supervision \citep{ying2023lesps}, and SAIST adapts a segmentation foundation model to infrared small targets with language-image guidance \citep{zhang2025saist}. These works broaden the supervision and model-design space. CGA-v2 stays in the fully supervised, single-frame setting and focuses on whether component geometry can improve a controlled MSHNet comparison without changing deployment behavior.
+
+\section{Method}
+
+\subsection{Problem Setting}
+
+Given an infrared image $x \in \mathbb{R}^{1 \times H \times W}$, the detector predicts a binary target mask $y \in \{0,1\}^{H \times W}$. The baseline detector produces a final logit $z \in \mathbb{R}^{1 \times H \times W}$, and evaluation thresholds $\sigma(z)$ at a fixed value of 0.5. CGA-v2 does not add post-processing, connected-component filtering, threshold search, calibration, or auxiliary-head inference. Its only change is the training loss applied to a declared intermediate feature.
+
+\begin{figure}[t]
+\centering
+\fbox{\begin{minipage}{0.92\linewidth}
+\centering
+\small
+Image $\rightarrow$ MSHNet adapter $\rightarrow$ final logit $z$ $\rightarrow$ sigmoid + threshold 0.5 \\
+\vspace{0.4em}
+Selected decoder feature $\rightarrow$ CGA auxiliary head $\rightarrow$ center, boundary, scale, peak logits \\
+\vspace{0.4em}
+Training only: geometry losses are added to OHEM + SoftIoU. \\
+Inference: auxiliary heads are ignored.
+\end{minipage}}
+\caption{CGA-v2 regularizes training through component-geometry heads while preserving the final MSHNet mask inference path.}
+\label{fig:pipeline}
+\end{figure}
+
+\subsection{Fail-Closed Detector Contract}
+
+The detector output is treated as a typed contract rather than an arbitrary tuple of tensors. The MSHNet adapter must expose a dictionary containing the final logit and a single selected CGA feature. In the current implementation, the final logit comes from \texttt{base\_logits/base\_logit}, and the selected feature comes from \texttt{decoder\_features.x\_d0}. The adapter also records metadata for the backbone name, logit source, feature source, feature stride, channel count, and spatial resolution.
+
+This contract prevents silent paper-mode behavior changes. A paper-evidence run cannot select the first four-dimensional tensor as a feature, cannot infer logits from an undocumented output position, and cannot accept a missing auxiliary head in strict CGA mode. The wrapper records the regularizer implementation as \texttt{center\_boundary\_scale\_peak} and explicitly marks \texttt{fallback\_regularizer\_used=false}. The model itself does not declare \texttt{paper\_evidence\_allowed}; that flag is runner and evidence metadata depending on the data and run gates.
+
+\begin{table}[t]
+\centering
+\caption{Fail-closed method contract used before a CGA result can be treated as paper evidence.}
+\label{tab:contract}
+\small
+\begin{tabular}{lp{0.56\linewidth}}
+\toprule
+Contract item & Required behavior \\
+\midrule
+Final logit & Explicit \texttt{logits/final\_logit}; no tuple-position inference. \\
+CGA feature & Exactly one declared feature with source, stride, channels, and resolution. \\
+Auxiliary heads & All four CGA logits must exist in paper mode. \\
+Fallback path & Any fallback or mock regularizer makes the run smoke-only. \\
+Evidence flag & Owned by runner metadata, not by the model wrapper. \\
+Evaluation & Sigmoid of final logit, threshold 0.5, no auxiliary test-time use. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Component-Geometry Targets}
+
+CGA-v2 constructs deterministic supervision from the binary mask. Let $\mathcal{C}(y)$ be the set of eight-connected foreground components in a training mask. For each component $C \in \mathcal{C}(y)$, we compute an integer center from the rounded mean of foreground pixel coordinates:
+\begin{equation}
+\mu(C)=\mathrm{round}\left(\frac{1}{|C|}\sum_{p\in C}p\right).
+\end{equation}
+The center target $t_c$ marks $\mu(C)$ and dilates it by radius $r_c=2$. The boundary target $t_b$ is the binary difference between a radius-$r_b$ dilation and radius-$r_b$ erosion of the foreground mask, with $r_b=1$. The scale target $t_s$ assigns every pixel in component $C$ the value
+\begin{equation}
+t_s(p) = \min(1, |C| / A_{\max}), \quad p \in C,
+\end{equation}
+where $A_{\max}=512$ in the default configuration. The peak target $t_p$ is a radius-$r_p=1$ dilation of the center target.
+
+The target builder uses only the current binary mask and fixed radii. It does not depend on dataset names, image identifiers, evaluation splits, hard-clutter labels, or external proposal generators. This design keeps the regularizer auditable and separates the method from the evidence protocol.
+
+The four targets regularize complementary failure modes. The center target supplies a sparse localization cue that is less sensitive to the exact contour of tiny objects. The boundary target encourages the decoder representation to preserve target-background transitions, where false positives and fragmented masks often appear. The scale target provides a coarse component-size signal without introducing a separate scale classifier. The peak target encourages compact high-confidence activation around the component center. Since these maps are not used for prediction at test time, their effect on the reported metrics must occur through the learned final mask predictor.
+
+This decomposition also keeps the ablation logic simple. Removing one target leaves the remaining targets well defined and preserves the same final inference path. Consequently, an ablation can test whether each geometry cue helps the final mask predictor rather than testing a different post-processing rule or a different output head.
+
+\subsection{Auxiliary Heads and Loss}
+
+Given the selected decoder feature $F$, the CGA auxiliary head applies a shared $3 \times 3$ convolution, batch normalization, and ReLU, followed by four $1 \times 1$ prediction heads:
+\begin{equation}
+(z_c, z_b, z_s, z_p) = h_{\theta}(F).
+\end{equation}
+The four logits correspond to center, boundary, scale, and peak targets. The baseline loss combines online hard-example-mining binary cross entropy and SoftIoU on the final logit. CGA-v2 adds weighted binary cross entropy losses for the four auxiliary targets:
+\begin{equation}
+\begin{aligned}
+\mathcal{L} ={}& \mathcal{L}_{\mathrm{OHEM}}(z,y)
+ + \mathcal{L}_{\mathrm{IoU}}(z,y) \\
+& + \alpha(e) \sum_{q \in \{c,b,s,p\}}
+ \lambda_q \mathrm{BCE}(z_q,t_q),
+\end{aligned}
+\end{equation}
+where $(\lambda_c,\lambda_b,\lambda_s,\lambda_p)=(0.05,0.03,0.02,0.03)$ in the default protocol. The ramp factor $\alpha(e)$ starts at the CGA start epoch and reaches 1 over 40 epochs, reducing early instability when the backbone mask predictor is still warming up.
+
+\begin{algorithm}[t]
+\caption{Training-time CGA-v2 target construction}
+\label{alg:cga}
+\begin{algorithmic}[1]
+\REQUIRE Binary mask $y$, radii $r_c,r_b,r_p$, max area $A_{\max}$
+\STATE Find eight-connected foreground components $\mathcal{C}(y)$.
+\STATE Initialize $t_c,t_b,t_s,t_p$ as zero maps.
+\FOR{each component $C \in \mathcal{C}(y)$}
+  \STATE Mark the rounded component centroid in $t_c$.
+  \STATE Set $t_s(p)=\min(1, |C|/A_{\max})$ for all $p \in C$.
+\ENDFOR
+\STATE Dilate $t_c$ with radius $r_c$.
+\STATE Set $t_b=\mathrm{dilate}(y,r_b)-\mathrm{erode}(y,r_b)$.
+\STATE Set $t_p=\mathrm{dilate}(t_c,r_p)$.
+\RETURN $t_c,t_b,t_s,t_p$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Inference}
+
+At test time, CGA-v2 follows the same inference path as MSHNetOHEM. The model returns the final mask logit, the probability map is obtained by sigmoid, and the binary mask is produced by threshold 0.5. Auxiliary logits are not used for prediction, post-processing, confidence calibration, or failure filtering. This restriction is central to the regularization claim: any final result must come from the same final-logit evaluation path as the baseline.
+
+\section{Experiments}
+
+\subsection{Controlled Evaluation Protocol and Current Evidence}
+
+We use a controlled paired protocol to ensure that any measured difference between MSHNetOHEM and MSHNetCGA is attributable to the training-time regularizer rather than to changes in inference or evaluation. Both methods are evaluated from epoch400 checkpoints, on the same NUDT-SIRST split, using the same final-logit sigmoid output and a fixed threshold of 0.5. The full test split is the primary evaluation split, while HC-Val is used only as a hard-clutter diagnostic split.
+
+At the time of this manuscript draft, the current repository contains a completed MSHNetOHEM seed42 epoch400 baseline, while the paired MSHNetCGA seed42 epoch400 evaluation is still pending. Therefore, we report the verified baseline values and leave the CGA entries, paired deltas, multi-seed statistics, and ablations unclaimed until the matching current-repository evaluations are complete. Historical results from other repositories and fallback or mock regularizers are not admissible paper evidence.
+
+\begin{table*}[t]
+\centering
+\caption{Current evidence gates in the repository. A pass here authorizes the protocol; it does not replace the missing paired CGA result.}
+\label{tab:evidence-gates}
+\small
+\begin{tabular}{lll}
+\toprule
+Gate & Current status & Paper implication \\
+\midrule
+Repository contract & Pass & Real CGA wrapper, finite loss, explicit train/eval logits. \\
+Claim guard & Pass & No current-repository claim-guard finding. \\
+Dataset preflight & Pass & NUDT-SIRST split files and masks pass integrity checks. \\
+HC-Val source audit & Pass & HC-Val source is accepted and has zero train overlap. \\
+OHEM seed42 epoch400 eval & Present & Baseline values in Table~\ref{tab:ohem-baseline} are usable. \\
+CGA seed42 epoch400 eval & Missing & All CGA effectiveness claims remain TBD. \\
+Seed43/44 paired evidence & Missing & No multi-seed robustness claim is allowed. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Dataset and Splits}
+
+Experiments target NUDT-SIRST, introduced with DNANet \citep{li2023dnanet}. The local dataset preflight passes with 663 training images and 664 test images. The frozen hard-clutter validation split contains 6 images, is a subset of the test split, and has zero overlap with the training split. The HC-Val source audit also passes, with the split source accepted before the new-repository seed42 training. The current evidence protocol therefore treats the full test split as the primary result and HC-Val as a diagnostic split for hard-clutter target preservation.
+
+\subsection{Metrics}
+
+We report pixel-level mIoU, normalized IoU (nIoU), precision, recall, and F1, plus object-level probability of detection (Pd), false-alarm rate (FA), FA in parts per million pixels (FA ppm), and false-positive component count. Pd is computed by matching predicted connected components to target components using centroid distance, and FA/FP components are computed from unmatched predicted components. All metrics use the fixed threshold 0.5 on the final probability map.
+
+\subsection{Implementation Protocol}
+
+The controlled protocol uses MSHNet as the backbone, 400 epochs, Adam with learning rate $5 \times 10^{-4}$, batch size 8, patch size 256, OHEM ratio 0.01, MSHNet warm epoch 5, CGA start epoch 1, and CGA ramp 40 epochs. Paper-evidence runs require \texttt{evidence\_mode=paper}, passed dataset preflight, passed HC-Val source audit, and no fallback regularizer. The current seed42 CGA log reaches epoch45 in the lowercase \texttt{mshnet\_cga} run and epoch46 in the legacy-cased \texttt{MSHNetCGA} run, so neither is a complete epoch400 paper result.
+
+The evidence package expected for each completed run contains the training log, the epoch400 checkpoint, the full-test evaluation summary, the HC-Val evaluation summary, and the run metadata recording seed, checkpoint epoch, fixed threshold, evidence mode, preflight flags, and fallback status. The evaluator writes both split-specific summaries and a compatibility full-test summary for the test split. This makes the paired comparison check mechanical: both baseline and CGA summaries must point to epoch400 checkpoints, the same dataset, the same split, the same seed, and threshold 0.5 before any delta is computed.
+
+The controlled protocol should not be mixed with literature-only numbers. Prior methods such as MSHNet/SLS, ISNet, and PConv+SD Loss are important closest threats, but their reported literature numbers are not same-repository paired results under this frozen evaluation path. They belong in related work and threat analysis unless reproduced under the same data registry, checkpoint, threshold, and metric code.
+
+\subsection{Completed Baseline}
+
+Table~\ref{tab:ohem-baseline} reports the completed current-repository MSHNetOHEM seed42 epoch400 baseline. These numbers are not a claim for CGA-v2. They establish the paired baseline that the matching CGA run must compare against.
+
+\begin{table}[t]
+\centering
+\caption{Verified MSHNetOHEM seed42 epoch400 baseline on NUDT-SIRST in the current repository. All values use threshold 0.5 on the final logit.}
+\label{tab:ohem-baseline}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Split & mIoU & Precision & Pd & FA ppm \\
+\midrule
+Full test & 0.9240 & 0.9692 & 0.9810 & 6.8711 \\
+HC-Val & 0.8556 & 0.9275 & 0.8333 & 22.8882 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+\centering
+\caption{Planned paired seed42 comparison. CGA entries must be filled only from the current-repository MSHNetCGA seed42 epoch400 checkpoint and fixed-threshold evaluation.}
+\label{tab:paired-main}
+\small
+\begin{tabular}{llrrrrrr}
+\toprule
+Split & Method & mIoU & nIoU & Precision & Recall & Pd & FA ppm \\
+\midrule
+Full test & MSHNetOHEM & 0.9240 & 0.9302 & 0.9692 & 0.9519 & 0.9810 & 6.8711 \\
+Full test & MSHNetCGA & TBD & TBD & TBD & TBD & TBD & TBD \\
+Full test & Delta & TBD & TBD & TBD & TBD & TBD & TBD \\
+\midrule
+HC-Val & MSHNetOHEM & 0.8556 & 0.7668 & 0.9275 & 0.9169 & 0.8333 & 22.8882 \\
+HC-Val & MSHNetCGA & TBD & TBD & TBD & TBD & TBD & TBD \\
+HC-Val & Delta & TBD & TBD & TBD & TBD & TBD & TBD \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Decision Rule for Completing Evidence}
+
+The next evidence gate is the paired seed42 comparison between current-repository MSHNetOHEM and MSHNetCGA at epoch400. The predeclared full-split gate is: mIoU delta at least $+0.020$, precision delta at least $+0.010$, and FA no worse than the baseline. HC-Val is reported as a hard-clutter diagnostic and should not be converted into an all-seed FA-decrease requirement. If seed42 fails the primary full-split gate, the method should not proceed as an AAAI main-method route without an implementation audit.
+
+If seed42 passes the primary gate, the next step is paired seed43/44 reproduction under the same controlled protocol. The paper should then report per-seed values, mean deltas, and the number of seeds with non-negative mIoU deltas. The multi-seed decision rule should remain weaker for HC-Val false alarms than for full-split performance because HC-Val contains only six hard-clutter images and is meant to diagnose tradeoffs. A fair negative HC-Val row is still useful evidence if it reveals that CGA improves target preservation while increasing false alarms in a specific clutter regime.
+
+\subsection{Ablation Plan}
+
+After the paired seed42 result passes the primary gate, ablations should isolate the four geometry terms and the ramp schedule. Table~\ref{tab:ablation-plan} records the planned ablation structure. Each row should be evaluated through the same final-logit inference path and fixed threshold; no row should use auxiliary outputs at test time.
+
+\begin{table}[t]
+\centering
+\caption{Ablation table scaffold. Values are intentionally TBD until full CGA evidence exists.}
+\label{tab:ablation-plan}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Variant & Full mIoU & HC-Val Pd & FA ppm \\
+\midrule
+Full CGA & TBD & TBD & TBD \\
+No center target & TBD & TBD & TBD \\
+No boundary target & TBD & TBD & TBD \\
+No scale target & TBD & TBD & TBD \\
+No peak target & TBD & TBD & TBD \\
+No ramp & TBD & TBD & TBD \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Failure Analysis Plan}
+
+Failure analysis should compare matched and unmatched components on the HC-Val images. The main questions are whether CGA preserves faint target components, whether boundary supervision reduces fragmented false positives, and whether scale supervision creates a precision/FA tradeoff on hard clutter. The known paper-writing boundary is that not every seed should be required to reduce HC-Val FA. A seed may improve mIoU or Pd while worsening precision or false alarms, and such cases must be reported instead of hidden.
+
+The final submission should include qualitative panels for at least three case types: target preservation under weak contrast, clutter suppression or fragmentation reduction, and failure cases where CGA increases false alarms or misses a target. Each panel should show the infrared image, ground-truth mask, MSHNetOHEM prediction, MSHNetCGA prediction, and optionally the auxiliary target maps for interpretation. Auxiliary logits should not be shown as predictions.
+
+\section{Threats to Validity}
+
+The first threat is evidence incompleteness. A regularizer paper is not validated by a clean implementation contract alone; the decisive result is whether the final mask predictor improves under paired evaluation. The current draft therefore cannot claim superiority over MSHNetOHEM or any literature method.
+
+The second threat is split narrowness. NUDT-SIRST is the only dataset with passed preflight and HC-Val source audit in the current evidence package. NUAA-SIRST and IRSTD-1K are present as registry targets but cannot support claims until their own integrity checks, training runs, and evaluation summaries exist.
+
+The third threat is attribution. Even after a positive full CGA result, mixed ablation outcomes are possible because center, boundary, scale, and peak targets act on a shared feature. The paper should avoid claiming strict necessity of every auxiliary target unless ablations support that statement across the fixed protocol.
+
+The fourth threat is metric tradeoff. IRSTD performance involves pixel overlap, component detection, and false alarms. An improvement in mIoU or Pd can coexist with a worse FA or precision value on hard clutter. The final paper should report this explicitly instead of selecting a single favorable metric.
+
+\section{Limitations and Reproducibility}
+
+The current draft is not submission-ready because the central CGA evidence is incomplete. Its verified claims are limited to the implementation contract, passed repository/data gates, and the MSHNetOHEM seed42 baseline in Table~\ref{tab:ohem-baseline}. The CGA improvement claim, multi-seed robustness, ablation attribution, and hard-clutter conclusion all require the current-repository MSHNetCGA epoch400 evaluations.
+
+Reproducibility is part of the method boundary rather than an afterthought. Paper evidence requires the real \texttt{cga\_center\_logit}, \texttt{cga\_boundary\_logit}, \texttt{cga\_scale\_logit}, and \texttt{cga\_peak\_logit} heads; fallback regularizers are smoke-test-only and cannot support paper tables. Dataset integrity is guarded by split hashes, zero train/test overlap, zero train/HC-Val overlap, and accepted HC-Val source provenance. Evaluation uses the final logit only and records the fixed threshold.
+
+The work uses public infrared imagery and binary target masks. It does not introduce human-subject data. The application area can include surveillance and defense-adjacent sensing, so deployment claims should remain bounded to benchmark detection behavior and should not imply operational reliability without separate validation.
+
+\section{Conclusion}
+
+CGA-v2 frames infrared small target detection as a component-geometry regularization problem: connected-component geometry can supervise training while leaving the final mask inference path unchanged. The method attaches center, boundary, scale, and peak auxiliary heads to an explicitly declared MSHNet feature and combines their losses with the baseline OHEM and SoftIoU objective. The current repository already supports the fail-closed implementation and data gates needed for paper evidence, but the decisive paired CGA result is still missing. The next manuscript revision should replace the TBD entries with current-repository epoch400 CGA evaluations and then decide whether the evidence supports an AAAI main claim.
+
+\bibliography{references}
+
+\end{document}
