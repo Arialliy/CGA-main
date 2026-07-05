@@ -1,0 +1,5 @@
+{
+  "check": "no_positive_cga_v2_claims",
+  "pass": true,
+  "violations": []
+}
