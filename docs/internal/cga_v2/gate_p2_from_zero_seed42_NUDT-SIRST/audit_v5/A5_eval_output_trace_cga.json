@@ -1,0 +1,112 @@
+{
+  "artifacts": {
+    "aux_logits_present": true,
+    "aux_logits_used_for_prediction": false,
+    "checkpoint": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+    "image_id": "000541",
+    "input_batch_shape": [
+      1,
+      1,
+      256,
+      256
+    ],
+    "intermediate_features_used_for_prediction": false,
+    "model": "MSHNetCGA",
+    "original_size": [
+      256,
+      256
+    ],
+    "positive_pixels_after_threshold": 16,
+    "raw_output_keys": [
+      "adapter_meta",
+      "aux_outputs",
+      "base_logit",
+      "base_logits",
+      "cga_boundary_logit",
+      "cga_center_logit",
+      "cga_peak_logit",
+      "cga_scale_logit",
+      "feature_meta",
+      "features",
+      "final_logit",
+      "final_logits",
+      "logits",
+      "masks",
+      "regularizer_meta",
+      "scale_logits",
+      "scale_logits_up"
+    ],
+    "raw_output_type": "dict",
+    "required_prediction_source": "final logits only",
+    "selected_prediction_tensor_key": "final_logit",
+    "selected_prediction_tensor_shape": [
+      1,
+      1,
+      256,
+      256
+    ],
+    "selected_prediction_tensor_stats": {
+      "max": 36.009033203125,
+      "mean": -30.892791748046875,
+      "min": -140.20498657226562,
+      "shape": [
+        1,
+        1,
+        256,
+        256
+      ]
+    },
+    "sigmoid_stats": {
+      "max": 1.0,
+      "mean": 0.00024417450185865164,
+      "min": 0.0,
+      "shape": [
+        1,
+        1,
+        256,
+        256
+      ]
+    },
+    "strict_load": {
+      "checkpoint_info": {
+        "checkpoint_keys": [
+          "backbone",
+          "cga_ramp_epochs",
+          "cga_start_epoch",
+          "dataset",
+          "epoch",
+          "evidence_mode",
+          "fallback_regularizer_used",
+          "model_name",
+          "mshnet_warm_epoch",
+          "optimizer",
+          "p1_preflight_passed",
+          "p1a_hcval_source_audit_passed",
+          "paper_evidence_allowed",
+          "protocol",
+          "regularizer_impl",
+          "seed",
+          "state_dict",
+          "use_cga"
+        ],
+        "checkpoint_type": "dict"
+      },
+      "missing_keys": [],
+      "normalization_applied": [
+        "unwrap_state_dict"
+      ],
+      "shape_mismatches": [],
+      "strict_load_passed": true,
+      "unexpected_keys": []
+    },
+    "threshold": 0.5
+  },
+  "audit_step": "A5_eval_output_trace_cga",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "Dry eval selected final detector logits only."
+  ],
+  "pass": true,
+  "requires_rerun": false
+}

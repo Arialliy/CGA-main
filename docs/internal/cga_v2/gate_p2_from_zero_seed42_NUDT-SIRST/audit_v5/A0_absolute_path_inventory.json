@@ -1,0 +1,96 @@
+{
+  "artifacts": {
+    "canonical": [],
+    "canonical_missing": [],
+    "canonical_root": "/home/ly/AAAI/CGA-main",
+    "mount_proofs": [
+      {
+        "canonical_prefix": "/home/ly/AAAI/CGA-main",
+        "current_run_path_exists": true,
+        "old_prefix": "/home/AAAI/CGA-main",
+        "relative_path": "results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar"
+      },
+      {
+        "canonical_prefix": "/home/ly/AAAI/CGA-main",
+        "current_run_path_exists": true,
+        "old_prefix": "/home/AAAI/CGA-main",
+        "relative_path": "results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/hcval/predictions"
+      },
+      {
+        "canonical_prefix": "/home/ly/AAAI/CGA-main",
+        "current_run_path_exists": true,
+        "old_prefix": "/home/AAAI/CGA-main",
+        "relative_path": "results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/test/predictions"
+      },
+      {
+        "canonical_prefix": "/home/ly/AAAI/CGA-main",
+        "current_run_path_exists": true,
+        "old_prefix": "/home/AAAI/CGA-main",
+        "relative_path": "results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/MSHNetOHEM_400.pth.tar"
+      },
+      {
+        "canonical_prefix": "/home/ly/AAAI/CGA-main",
+        "current_run_path_exists": true,
+        "old_prefix": "/home/AAAI/CGA-main",
+        "relative_path": "results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/hcval/predictions"
+      },
+      {
+        "canonical_prefix": "/home/ly/AAAI/CGA-main",
+        "current_run_path_exists": true,
+        "old_prefix": "/home/AAAI/CGA-main",
+        "relative_path": "results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/test/predictions"
+      }
+    ],
+    "noncanonical_resolved_by_mount_proof": [
+      {
+        "canonical_equivalent": "/home/ly/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+        "mount_proof": "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main.",
+        "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+        "source": "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/summary.json"
+      },
+      {
+        "canonical_equivalent": "/home/ly/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/hcval/predictions",
+        "mount_proof": "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main.",
+        "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/hcval/predictions",
+        "source": "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/summary.json"
+      },
+      {
+        "canonical_equivalent": "/home/ly/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/test/predictions",
+        "mount_proof": "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main.",
+        "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/test/predictions",
+        "source": "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/summary.json"
+      },
+      {
+        "canonical_equivalent": "/home/ly/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/MSHNetOHEM_400.pth.tar",
+        "mount_proof": "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main.",
+        "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/MSHNetOHEM_400.pth.tar",
+        "source": "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/summary.json"
+      },
+      {
+        "canonical_equivalent": "/home/ly/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/hcval/predictions",
+        "mount_proof": "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main.",
+        "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/hcval/predictions",
+        "source": "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/summary.json"
+      },
+      {
+        "canonical_equivalent": "/home/ly/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/test/predictions",
+        "mount_proof": "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main.",
+        "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/test/predictions",
+        "source": "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/summary.json"
+      }
+    ],
+    "noncanonical_unresolved": [],
+    "path_count": 6,
+    "realpath_equivalent": [],
+    "run_root": "/home/AAAI/CGA-main"
+  },
+  "audit_step": "A0_absolute_path_inventory",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "Extracted 6 unique absolute paths from summaries, logs, checkpoint metadata, and P2 JSON files.",
+    "Audit executed in Docker container 53fcbad0a5e2 where /home/AAAI/CGA-main is the mounted run root corresponding to host canonical root /home/ly/AAAI/CGA-main."
+  ],
+  "pass": true,
+  "requires_rerun": false
+}

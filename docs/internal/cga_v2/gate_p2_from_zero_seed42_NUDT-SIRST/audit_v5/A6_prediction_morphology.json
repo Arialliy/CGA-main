@@ -1,0 +1,213 @@
+{
+  "artifacts": {
+    "component_morphology": {
+      "hcval_mean_foreground_ratio_delta": 0.0005976359049479166,
+      "hcval_mean_fp_area_delta": 39.0,
+      "hcval_mean_fp_component_delta": 4.333333333333333,
+      "hcval_morphology": "mixed_area_and_fragmentation",
+      "test_mean_foreground_ratio_delta": 5.974827042545181e-07,
+      "test_mean_fp_area_delta": 0.19126506024096385,
+      "test_mean_fp_component_delta": 0.02710843373493976,
+      "test_morphology": "mixed_area_and_fragmentation",
+      "top5_hcval_false_alarm_images_by_foreground_ratio_delta": [
+        {
+          "cga_foreground_ratio": 0.003936767578125,
+          "cga_fp_area": 241,
+          "cga_fp_components": 35,
+          "foreground_ratio_delta": 0.003448486328125,
+          "fp_area_delta": 209,
+          "fp_component_delta": 26,
+          "image_id": "001289",
+          "ohem_foreground_ratio": 0.00048828125,
+          "ohem_fp_area": 32,
+          "ohem_fp_components": 9
+        },
+        {
+          "cga_foreground_ratio": 0.001495361328125,
+          "cga_fp_area": 37,
+          "cga_fp_components": 1,
+          "foreground_ratio_delta": 0.0005645751953125,
+          "fp_area_delta": 37,
+          "fp_component_delta": 1,
+          "image_id": "000510",
+          "ohem_foreground_ratio": 0.0009307861328125,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        },
+        {
+          "cga_foreground_ratio": 0.0003509521484375,
+          "cga_fp_area": 0,
+          "cga_fp_components": 0,
+          "foreground_ratio_delta": -4.57763671875e-05,
+          "fp_area_delta": 0,
+          "fp_component_delta": 0,
+          "image_id": "000720",
+          "ohem_foreground_ratio": 0.000396728515625,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        },
+        {
+          "cga_foreground_ratio": 0.00103759765625,
+          "cga_fp_area": 0,
+          "cga_fp_components": 0,
+          "foreground_ratio_delta": -6.103515625e-05,
+          "fp_area_delta": 0,
+          "fp_component_delta": 0,
+          "image_id": "001255",
+          "ohem_foreground_ratio": 0.0010986328125,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        },
+        {
+          "cga_foreground_ratio": 0.0013427734375,
+          "cga_fp_area": 0,
+          "cga_fp_components": 0,
+          "foreground_ratio_delta": -0.0001068115234375,
+          "fp_area_delta": 0,
+          "fp_component_delta": 0,
+          "image_id": "000967",
+          "ohem_foreground_ratio": 0.0014495849609375,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        }
+      ],
+      "top5_hcval_false_alarm_images_by_fp_components": [
+        {
+          "cga_foreground_ratio": 0.003936767578125,
+          "cga_fp_area": 241,
+          "cga_fp_components": 35,
+          "foreground_ratio_delta": 0.003448486328125,
+          "fp_area_delta": 209,
+          "fp_component_delta": 26,
+          "image_id": "001289",
+          "ohem_foreground_ratio": 0.00048828125,
+          "ohem_fp_area": 32,
+          "ohem_fp_components": 9
+        },
+        {
+          "cga_foreground_ratio": 0.001495361328125,
+          "cga_fp_area": 37,
+          "cga_fp_components": 1,
+          "foreground_ratio_delta": 0.0005645751953125,
+          "fp_area_delta": 37,
+          "fp_component_delta": 1,
+          "image_id": "000510",
+          "ohem_foreground_ratio": 0.0009307861328125,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        },
+        {
+          "cga_foreground_ratio": 0.0003509521484375,
+          "cga_fp_area": 0,
+          "cga_fp_components": 0,
+          "foreground_ratio_delta": -4.57763671875e-05,
+          "fp_area_delta": 0,
+          "fp_component_delta": 0,
+          "image_id": "000720",
+          "ohem_foreground_ratio": 0.000396728515625,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        },
+        {
+          "cga_foreground_ratio": 0.0012969970703125,
+          "cga_fp_area": 0,
+          "cga_fp_components": 0,
+          "foreground_ratio_delta": -0.000213623046875,
+          "fp_area_delta": -12,
+          "fp_component_delta": -1,
+          "image_id": "000906",
+          "ohem_foreground_ratio": 0.0015106201171875,
+          "ohem_fp_area": 12,
+          "ohem_fp_components": 1
+        },
+        {
+          "cga_foreground_ratio": 0.0013427734375,
+          "cga_fp_area": 0,
+          "cga_fp_components": 0,
+          "foreground_ratio_delta": -0.0001068115234375,
+          "fp_area_delta": 0,
+          "fp_component_delta": 0,
+          "image_id": "000967",
+          "ohem_foreground_ratio": 0.0014495849609375,
+          "ohem_fp_area": 0,
+          "ohem_fp_components": 0
+        }
+      ]
+    },
+    "diagnostics": [
+      "hcval_area_overactivation",
+      "hcval_fragmented_noise_components"
+    ],
+    "integrity": {
+      "MSHNetCGA/hcval": {
+        "all_png_readable": true,
+        "duplicate_prediction_ids": [],
+        "exists": true,
+        "expected_count": 6,
+        "extra_prediction_ids": [],
+        "missing_prediction_ids": [],
+        "model": "MSHNetCGA",
+        "png_count": 6,
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/hcval/predictions",
+        "prediction_ids_align_with_split_list": true,
+        "shape_mismatch_ids": [],
+        "split": "hcval",
+        "unreadable_prediction_ids": []
+      },
+      "MSHNetCGA/test": {
+        "all_png_readable": true,
+        "duplicate_prediction_ids": [],
+        "exists": true,
+        "expected_count": 664,
+        "extra_prediction_ids": [],
+        "missing_prediction_ids": [],
+        "model": "MSHNetCGA",
+        "png_count": 664,
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/test/predictions",
+        "prediction_ids_align_with_split_list": true,
+        "shape_mismatch_ids": [],
+        "split": "test",
+        "unreadable_prediction_ids": []
+      },
+      "MSHNetOHEM/hcval": {
+        "all_png_readable": true,
+        "duplicate_prediction_ids": [],
+        "exists": true,
+        "expected_count": 6,
+        "extra_prediction_ids": [],
+        "missing_prediction_ids": [],
+        "model": "MSHNetOHEM",
+        "png_count": 6,
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/hcval/predictions",
+        "prediction_ids_align_with_split_list": true,
+        "shape_mismatch_ids": [],
+        "split": "hcval",
+        "unreadable_prediction_ids": []
+      },
+      "MSHNetOHEM/test": {
+        "all_png_readable": true,
+        "duplicate_prediction_ids": [],
+        "exists": true,
+        "expected_count": 664,
+        "extra_prediction_ids": [],
+        "missing_prediction_ids": [],
+        "model": "MSHNetOHEM",
+        "png_count": 664,
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/test/predictions",
+        "prediction_ids_align_with_split_list": true,
+        "shape_mismatch_ids": [],
+        "split": "test",
+        "unreadable_prediction_ids": []
+      }
+    }
+  },
+  "audit_step": "A6_prediction_morphology",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "hcval_area_overactivation",
+    "hcval_fragmented_noise_components"
+  ],
+  "pass": true,
+  "requires_rerun": false
+}

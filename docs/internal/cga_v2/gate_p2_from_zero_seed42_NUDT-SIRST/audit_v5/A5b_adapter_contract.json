@@ -1,0 +1,127 @@
+{
+  "artifacts": {
+    "adapter_meta": {
+      "backbone": "mshnet",
+      "feature_source": "decoder_features.x_d0",
+      "logits_source": "base_logits/base_logit"
+    },
+    "aux_logits": {
+      "cga_boundary_logit": [
+        1,
+        1,
+        256,
+        256
+      ],
+      "cga_center_logit": [
+        1,
+        1,
+        256,
+        256
+      ],
+      "cga_peak_logit": [
+        1,
+        1,
+        256,
+        256
+      ],
+      "cga_scale_logit": [
+        1,
+        1,
+        256,
+        256
+      ]
+    },
+    "aux_logits_spatial_compatibility_with_masks_logits": true,
+    "checkpoint": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+    "evidence_metadata": {
+      "evidence_mode": "paper",
+      "fallback_regularizer_used": false,
+      "p1_preflight_passed": true,
+      "p1a_hcval_source_audit_passed": true,
+      "paper_evidence_allowed": true,
+      "protocol": "controlled",
+      "regularizer_impl": "center_boundary_scale_peak"
+    },
+    "fallback_regularizer_used": false,
+    "feature_channels": 16,
+    "feature_meta": [
+      {
+        "channels": 16,
+        "resolution": [
+          256,
+          256
+        ],
+        "source": "decoder_features.x_d0",
+        "stride": 1
+      }
+    ],
+    "feature_resolution": [
+      256,
+      256
+    ],
+    "feature_stride": 1,
+    "features_0_dtype": "torch.float32",
+    "features_0_shape": [
+      1,
+      16,
+      256,
+      256
+    ],
+    "image_id": "000541",
+    "logits_shape": [
+      1,
+      1,
+      256,
+      256
+    ],
+    "model": "MSHNetCGA",
+    "paper_evidence_allowed_source": "checkpoint_metadata_and_train_log",
+    "regularizer_impl": "center_boundary_scale_peak",
+    "regularizer_meta": {
+      "fallback_regularizer_used": false,
+      "regularizer_impl": "center_boundary_scale_peak",
+      "use_cga": true
+    },
+    "strict_load": {
+      "checkpoint_info": {
+        "checkpoint_keys": [
+          "backbone",
+          "cga_ramp_epochs",
+          "cga_start_epoch",
+          "dataset",
+          "epoch",
+          "evidence_mode",
+          "fallback_regularizer_used",
+          "model_name",
+          "mshnet_warm_epoch",
+          "optimizer",
+          "p1_preflight_passed",
+          "p1a_hcval_source_audit_passed",
+          "paper_evidence_allowed",
+          "protocol",
+          "regularizer_impl",
+          "seed",
+          "state_dict",
+          "use_cga"
+        ],
+        "checkpoint_type": "dict"
+      },
+      "missing_keys": [],
+      "normalization_applied": [
+        "unwrap_state_dict"
+      ],
+      "shape_mismatches": [],
+      "strict_load_passed": true,
+      "unexpected_keys": []
+    },
+    "validate_detector_output_passed": true
+  },
+  "audit_step": "A5b_adapter_contract",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "MSHNet adapter and CGA wrapper satisfy the explicit output contract."
+  ],
+  "pass": true,
+  "requires_rerun": false
+}

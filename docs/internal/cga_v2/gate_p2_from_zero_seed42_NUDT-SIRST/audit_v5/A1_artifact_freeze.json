@@ -1,0 +1,286 @@
+{
+  "artifacts": {
+    "artifacts": {
+      "MSHNetCGA/hcval": {
+        "checkpoint": {
+          "exists": true,
+          "mtime": 1783207075.9337072,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+          "sha256": "7aa2d157b5f8a7aa2234991242612ef67094e7bdbef6d1d47e9c868b1984a190",
+          "size": 49211746
+        },
+        "checkpoint_epoch": 400,
+        "checkpoint_metadata": {
+          "backbone": "mshnet",
+          "cga_ramp_epochs": 40,
+          "cga_start_epoch": 1,
+          "dataset": "NUDT-SIRST",
+          "epoch": 400,
+          "evidence_mode": "paper",
+          "fallback_regularizer_used": false,
+          "model_name": "MSHNetCGA",
+          "mshnet_warm_epoch": 5,
+          "p1_preflight_passed": true,
+          "p1a_hcval_source_audit_passed": true,
+          "paper_evidence_allowed": true,
+          "protocol": "controlled",
+          "regularizer_impl": "center_boundary_scale_peak",
+          "seed": 42,
+          "use_cga": true
+        },
+        "model": "MSHNetCGA",
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/hcval/predictions",
+        "prediction_dir_exists": true,
+        "prediction_png_count": 6,
+        "split": "hcval",
+        "summary_metrics": {
+          "exists": true,
+          "mtime": 1783207151.8705065,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/hcval/summary_metrics.json",
+          "sha256": "fa03605fc8c4d6ddae8a9c06c7985c096c3cd4f6b64fc121a42069ce05abdba8",
+          "size": 758
+        },
+        "train_log": {
+          "exists": true,
+          "mtime": 1783207075.8707068,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/train_log.jsonl",
+          "sha256": "7ff3575fd96b0e5b5c9d1f55b3931cdc734cc78782f06af9600a44127d714772",
+          "size": 291269
+        },
+        "train_log_last_epoch": 400,
+        "train_log_line_count": 400,
+        "train_log_parse_error": null
+      },
+      "MSHNetCGA/test": {
+        "checkpoint": {
+          "exists": true,
+          "mtime": 1783207075.9337072,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+          "sha256": "7aa2d157b5f8a7aa2234991242612ef67094e7bdbef6d1d47e9c868b1984a190",
+          "size": 49211746
+        },
+        "checkpoint_epoch": 400,
+        "checkpoint_metadata": {
+          "backbone": "mshnet",
+          "cga_ramp_epochs": 40,
+          "cga_start_epoch": 1,
+          "dataset": "NUDT-SIRST",
+          "epoch": 400,
+          "evidence_mode": "paper",
+          "fallback_regularizer_used": false,
+          "model_name": "MSHNetCGA",
+          "mshnet_warm_epoch": 5,
+          "p1_preflight_passed": true,
+          "p1a_hcval_source_audit_passed": true,
+          "paper_evidence_allowed": true,
+          "protocol": "controlled",
+          "regularizer_impl": "center_boundary_scale_peak",
+          "seed": 42,
+          "use_cga": true
+        },
+        "model": "MSHNetCGA",
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/test/predictions",
+        "prediction_dir_exists": true,
+        "prediction_png_count": 664,
+        "split": "test",
+        "summary_metrics": {
+          "exists": true,
+          "mtime": 1783207136.4374163,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/test/summary_metrics.json",
+          "sha256": "a8c547a06bf7c2a3f713ec96c29d309a043c7eb6856df6c6234ab176231ad654",
+          "size": 772
+        },
+        "train_log": {
+          "exists": true,
+          "mtime": 1783207075.8707068,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/train_log.jsonl",
+          "sha256": "7ff3575fd96b0e5b5c9d1f55b3931cdc734cc78782f06af9600a44127d714772",
+          "size": 291269
+        },
+        "train_log_last_epoch": 400,
+        "train_log_line_count": 400,
+        "train_log_parse_error": null
+      },
+      "MSHNetOHEM/hcval": {
+        "checkpoint": {
+          "exists": true,
+          "mtime": 1783190342.0451279,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/MSHNetOHEM_400.pth.tar",
+          "sha256": "6ef55c7b561bc6a9ebc64acdad3b1aba2dda4ab7bd72a848169a7ee7c5ae52a3",
+          "size": 49134377
+        },
+        "checkpoint_epoch": 400,
+        "checkpoint_metadata": {
+          "backbone": "mshnet",
+          "cga_ramp_epochs": 40,
+          "cga_start_epoch": 1,
+          "dataset": "NUDT-SIRST",
+          "epoch": 400,
+          "evidence_mode": "paper",
+          "fallback_regularizer_used": false,
+          "model_name": "MSHNetOHEM",
+          "mshnet_warm_epoch": 5,
+          "p1_preflight_passed": true,
+          "p1a_hcval_source_audit_passed": true,
+          "paper_evidence_allowed": true,
+          "protocol": "controlled",
+          "regularizer_impl": "none",
+          "seed": 42,
+          "use_cga": false
+        },
+        "model": "MSHNetOHEM",
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/hcval/predictions",
+        "prediction_dir_exists": true,
+        "prediction_png_count": 6,
+        "split": "hcval",
+        "summary_metrics": {
+          "exists": true,
+          "mtime": 1783207112.8305469,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/hcval/summary_metrics.json",
+          "sha256": "4a370fc8b8a09580630e845e43d7b12e8bdce6da07e63902c0087f70927aef68",
+          "size": 781
+        },
+        "train_log": {
+          "exists": true,
+          "mtime": 1783190341.9201572,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/train_log.jsonl",
+          "sha256": "edece71b6b10e5ec99538316a82b327a933ec995d619bdcabd4f669a3b0e0073",
+          "size": 203706
+        },
+        "train_log_last_epoch": 400,
+        "train_log_line_count": 400,
+        "train_log_parse_error": null
+      },
+      "MSHNetOHEM/test": {
+        "checkpoint": {
+          "exists": true,
+          "mtime": 1783190342.0451279,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/MSHNetOHEM_400.pth.tar",
+          "sha256": "6ef55c7b561bc6a9ebc64acdad3b1aba2dda4ab7bd72a848169a7ee7c5ae52a3",
+          "size": 49134377
+        },
+        "checkpoint_epoch": 400,
+        "checkpoint_metadata": {
+          "backbone": "mshnet",
+          "cga_ramp_epochs": 40,
+          "cga_start_epoch": 1,
+          "dataset": "NUDT-SIRST",
+          "epoch": 400,
+          "evidence_mode": "paper",
+          "fallback_regularizer_used": false,
+          "model_name": "MSHNetOHEM",
+          "mshnet_warm_epoch": 5,
+          "p1_preflight_passed": true,
+          "p1a_hcval_source_audit_passed": true,
+          "paper_evidence_allowed": true,
+          "protocol": "controlled",
+          "regularizer_impl": "none",
+          "seed": 42,
+          "use_cga": false
+        },
+        "model": "MSHNetOHEM",
+        "prediction_dir": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/test/predictions",
+        "prediction_dir_exists": true,
+        "prediction_png_count": 664,
+        "split": "test",
+        "summary_metrics": {
+          "exists": true,
+          "mtime": 1783207099.0517945,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/test/summary_metrics.json",
+          "sha256": "235b2927c535af61b7c46577682e2184d003a160b1b6a5775a8baaca51dcebdd",
+          "size": 778
+        },
+        "train_log": {
+          "exists": true,
+          "mtime": 1783190341.9201572,
+          "path": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/train_log.jsonl",
+          "sha256": "edece71b6b10e5ec99538316a82b327a933ec995d619bdcabd4f669a3b0e0073",
+          "size": 203706
+        },
+        "train_log_last_epoch": 400,
+        "train_log_line_count": 400,
+        "train_log_parse_error": null
+      }
+    },
+    "code_identity_hashes": {
+      "loss.py": {
+        "exists": true,
+        "mtime": 1783161634.8631766,
+        "path": "/home/AAAI/CGA-main/loss.py",
+        "sha256": "38a12c013a5a5bee32a1b0484cd3bb50efbc2f35350dadcdd2535b7f8bb23d9e",
+        "size": 9732
+      },
+      "model/backbones/mshnet_adapter.py": {
+        "exists": true,
+        "mtime": 1783161605.921343,
+        "path": "/home/AAAI/CGA-main/model/backbones/mshnet_adapter.py",
+        "sha256": "4f4d6eb9942fa25395b879ca58cfcf924c00362d053231fe65b0f93b6324b5b3",
+        "size": 2921
+      },
+      "model/cga_wrapper.py": {
+        "exists": true,
+        "mtime": 1783168223.5114698,
+        "path": "/home/AAAI/CGA-main/model/cga_wrapper.py",
+        "sha256": "b57b41b1c929294d8ef8ce292ca58090e6f6747506fbb5fdf9fb0e77b8d24c53",
+        "size": 1697
+      },
+      "model/output_contract.py": {
+        "exists": true,
+        "mtime": 1783161605.9203432,
+        "path": "/home/AAAI/CGA-main/model/output_contract.py",
+        "sha256": "ea3c132acc8cd226913c844ab1bd62a1fe49aea2d9918feff96b464fe06ef085",
+        "size": 4064
+      },
+      "net.py": {
+        "exists": true,
+        "mtime": 1783161964.2792795,
+        "path": "/home/AAAI/CGA-main/net.py",
+        "sha256": "25959e981c411f1e6dd45dffe3a050b7df89f607b3b88e4491aa51ba46dbbda1",
+        "size": 3407
+      },
+      "test.py": {
+        "exists": true,
+        "mtime": 1783168895.573977,
+        "path": "/home/AAAI/CGA-main/test.py",
+        "sha256": "0b0f566cb2a2a578a3cf56e5175c010ec614150b4ffc5bce08775b0d5ed29c99",
+        "size": 5440
+      },
+      "train.py": {
+        "exists": true,
+        "mtime": 1783168264.0015495,
+        "path": "/home/AAAI/CGA-main/train.py",
+        "sha256": "ecc2d27b0ae48550876751938ce8967bf1a86c480f7d26bfce0944e28cd1efe6",
+        "size": 10345
+      },
+      "utils/cga_targets.py": {
+        "exists": true,
+        "mtime": 1783158056.647312,
+        "path": "/home/AAAI/CGA-main/utils/cga_targets.py",
+        "sha256": "7ffb66df90128357485dad4a86364eb7f370ec37b32b0294b3ed8c9e0a5becf1",
+        "size": 4579
+      }
+    },
+    "git": {
+      "branch": null,
+      "branch_error": "fatal: detected dubious ownership in repository at '/home/AAAI/CGA-main'\nTo add an exception for this directory, call:\n\n\tgit config --global --add safe.directory /home/AAAI/CGA-main",
+      "commit": null,
+      "commit_error": "fatal: detected dubious ownership in repository at '/home/AAAI/CGA-main'\nTo add an exception for this directory, call:\n\n\tgit config --global --add safe.directory /home/AAAI/CGA-main",
+      "diff_check_pass": false,
+      "diff_check_stderr": "warning: Not a git repository. Use --no-index to compare two paths outside a working tree\nusage: git diff --no-index [<options>] <path> <path>\n\nDiff output format options\n    -p, --patch           generate patch\n    -s, --no-patch        suppress diff output\n    -u                    generate patch\n    -U, --unified[=<n>]   generate diffs with <n> lines context\n    -W, --function-context\n                          generate diffs with <n> lines context\n    --raw                 generate the diff in raw format\n    --patch-with-raw      synonym for '-p --raw'\n    --patch-with-stat     synonym for '-p --stat'\n    --numstat             machine friendly --stat\n    --shortstat           output only the last line of --stat\n    -X, --dirstat[=<param1,param2>...]\n                          output the distribution of relative amount of changes for each sub-directory\n    --cumulative          synonym for --dirstat=cumulative\n    --dirstat-by-file[=<param1,param2>...]\n                          synonym for --dirstat=files,param1,param2...\n    --check               warn if changes introduce conflict markers or whitespace errors\n    --summary             condensed summary such as creations, renames and mode changes\n    --name-only           show only names of changed files\n    --name-status         show only names and status of changed files\n    --stat[=<width>[,<name-width>[,<count>]]]\n                          generate diffstat\n    --stat-width <width>  generate diffstat with a given width\n    --stat-name-width <width>\n                          generate diffstat with a given name width\n    --stat-graph-width <width>\n                          generate diffstat with a given graph width\n    --stat-count <count>  generate diffstat with limited lines\n    --compact-summary     generate compact summary in diffstat\n    --binary              output a binary diff that can be applied\n    --full-index          show full pre- and post-image object names on the \"index\" lines\n    --color[=<when>]      show colored diff\n    --ws-error-highlight <kind>\n                          highlight whitespace errors in the 'context', 'old' or 'new' lines in the diff\n    -z                    do not munge pathnames and use NULs as output field terminators in --raw or --numstat\n    --abbrev[=<n>]        use <n> digits to display object names\n    --src-prefix <prefix>\n                          show the given source prefix instead of \"a/\"\n    --dst-prefix <prefix>\n                          show the given destination prefix instead of \"b/\"\n    --line-prefix <prefix>\n                          prepend an additional prefix to every line of output\n    --no-prefix           do not show any source or destination prefix\n    --inter-hunk-context <n>\n                          show context between diff hunks up to the specified number of lines\n    --output-indicator-new <char>\n                          specify the character to indicate a new line instead of '+'\n    --output-indicator-old <char>\n                          specify the character to indicate an old line instead of '-'\n    --output-indicator-context <char>\n                          specify the character to indicate a context instead of ' '\n\nDiff rename options\n    -B, --break-rewrites[=<n>[/<m>]]\n                          break complete rewrite changes into pairs of delete and create\n    -M, --find-renames[=<n>]\n                          detect renames\n    -D, --irreversible-delete\n                          omit the preimage for deletes\n    -C, --find-copies[=<n>]\n                          detect copies\n    --find-copies-harder  use unmodified files as source to find copies\n    --no-renames          disable rename detection\n    --rename-empty        use empty blobs as rename source\n    --follow              continue listing the history of a file beyond renames\n    -l <n>                prevent rename/copy detection if the number of rename/copy targets exceeds given limit\n\nDiff algorithm options\n    --minimal             produce the smallest possible diff\n    -w, --ignore-all-space\n                          ignore whitespace when comparing lines\n    -b, --ignore-space-change\n                          ignore changes in amount of whitespace\n    --ignore-space-at-eol\n                          ignore changes in whitespace at EOL\n    --ignore-cr-at-eol    ignore carrier-return at the end of line\n    --ignore-blank-lines  ignore changes whose lines are all blank\n    -I, --ignore-matching-lines <regex>\n                          ignore changes whose all lines match <regex>\n    --indent-heuristic    heuristic to shift diff hunk boundaries for easy reading\n    --patience            generate diff using the \"patience diff\" algorithm\n    --histogram           generate diff using the \"histogram diff\" algorithm\n    --diff-algorithm <algorithm>\n                          choose a diff algorithm\n    --anchored <text>     generate diff using the \"anchored diff\" algorithm\n    --word-diff[=<mode>]  show word diff, using <mode> to delimit changed words\n    --word-diff-regex <regex>\n                          use <regex> to decide what a word is\n    --color-words[=<regex>]\n                          equivalent to --word-diff=color --word-diff-regex=<regex>\n    --color-moved[=<mode>]\n                          moved lines of code are colored differently\n    --color-moved-ws <mode>\n                          how white spaces are ignored in --color-moved\n\nOther diff options\n    --relative[=<prefix>]\n                          when run from subdir, exclude changes outside and show relative paths\n    -a, --text            treat all files as text\n    -R                    swap two inputs, reverse the diff\n    --exit-code           exit with 1 if there were differences, 0 otherwise\n    --quiet               disable all output of the program\n    --ext-diff            allow an external diff helper to be executed\n    --textconv            run external text conversion filters when comparing binary files\n    --ignore-submodules[=<when>]\n                          ignore changes to submodules in the diff generation\n    --submodule[=<format>]\n                          specify how differences in submodules are shown\n    --ita-invisible-in-index\n                          hide 'git add -N' entries from the index\n    --ita-visible-in-index\n                          treat 'git add -N' entries as real in the index\n    -S <string>           look for differences that change the number of occurrences of the specified string\n    -G <regex>            look for differences that change the number of occurrences of the specified regex\n    --pickaxe-all         show all changes in the changeset with -S or -G\n    --pickaxe-regex       treat <string> in -S as extended POSIX regular expression\n    -O <file>             control the order in which files appear in the output\n    --rotate-to <path>    show the change in the specified path first\n    --skip-to <path>      skip the output to the specified path\n    --find-object <object-id>\n                          look for differences that change the number of occurrences of the specified object\n    --diff-filter [(A|C|D|M|R|T|U|X|B)...[*]]\n                          select files by diff type\n    --output <file>       Output to a specific file",
+      "diff_check_stdout": "",
+      "diff_stat": "",
+      "diff_stat_error": "warning: Not a git repository. Use --no-index to compare two paths outside a working tree\nusage: git diff --no-index [<options>] <path> <path>\n\nDiff output format options\n    -p, --patch           generate patch\n    -s, --no-patch        suppress diff output\n    -u                    generate patch\n    -U, --unified[=<n>]   generate diffs with <n> lines context\n    -W, --function-context\n                          generate diffs with <n> lines context\n    --raw                 generate the diff in raw format\n    --patch-with-raw      synonym for '-p --raw'\n    --patch-with-stat     synonym for '-p --stat'\n    --numstat             machine friendly --stat\n    --shortstat           output only the last line of --stat\n    -X, --dirstat[=<param1,param2>...]\n                          output the distribution of relative amount of changes for each sub-directory\n    --cumulative          synonym for --dirstat=cumulative\n    --dirstat-by-file[=<param1,param2>...]\n                          synonym for --dirstat=files,param1,param2...\n    --check               warn if changes introduce conflict markers or whitespace errors\n    --summary             condensed summary such as creations, renames and mode changes\n    --name-only           show only names of changed files\n    --name-status         show only names and status of changed files\n    --stat[=<width>[,<name-width>[,<count>]]]\n                          generate diffstat\n    --stat-width <width>  generate diffstat with a given width\n    --stat-name-width <width>\n                          generate diffstat with a given name width\n    --stat-graph-width <width>\n                          generate diffstat with a given graph width\n    --stat-count <count>  generate diffstat with limited lines\n    --compact-summary     generate compact summary in diffstat\n    --binary              output a binary diff that can be applied\n    --full-index          show full pre- and post-image object names on the \"index\" lines\n    --color[=<when>]      show colored diff\n    --ws-error-highlight <kind>\n                          highlight whitespace errors in the 'context', 'old' or 'new' lines in the diff\n    -z                    do not munge pathnames and use NULs as output field terminators in --raw or --numstat\n    --abbrev[=<n>]        use <n> digits to display object names\n    --src-prefix <prefix>\n                          show the given source prefix instead of \"a/\"\n    --dst-prefix <prefix>\n                          show the given destination prefix instead of \"b/\"\n    --line-prefix <prefix>\n                          prepend an additional prefix to every line of output\n    --no-prefix           do not show any source or destination prefix\n    --inter-hunk-context <n>\n                          show context between diff hunks up to the specified number of lines\n    --output-indicator-new <char>\n                          specify the character to indicate a new line instead of '+'\n    --output-indicator-old <char>\n                          specify the character to indicate an old line instead of '-'\n    --output-indicator-context <char>\n                          specify the character to indicate a context instead of ' '\n\nDiff rename options\n    -B, --break-rewrites[=<n>[/<m>]]\n                          break complete rewrite changes into pairs of delete and create\n    -M, --find-renames[=<n>]\n                          detect renames\n    -D, --irreversible-delete\n                          omit the preimage for deletes\n    -C, --find-copies[=<n>]\n                          detect copies\n    --find-copies-harder  use unmodified files as source to find copies\n    --no-renames          disable rename detection\n    --rename-empty        use empty blobs as rename source\n    --follow              continue listing the history of a file beyond renames\n    -l <n>                prevent rename/copy detection if the number of rename/copy targets exceeds given limit\n\nDiff algorithm options\n    --minimal             produce the smallest possible diff\n    -w, --ignore-all-space\n                          ignore whitespace when comparing lines\n    -b, --ignore-space-change\n                          ignore changes in amount of whitespace\n    --ignore-space-at-eol\n                          ignore changes in whitespace at EOL\n    --ignore-cr-at-eol    ignore carrier-return at the end of line\n    --ignore-blank-lines  ignore changes whose lines are all blank\n    -I, --ignore-matching-lines <regex>\n                          ignore changes whose all lines match <regex>\n    --indent-heuristic    heuristic to shift diff hunk boundaries for easy reading\n    --patience            generate diff using the \"patience diff\" algorithm\n    --histogram           generate diff using the \"histogram diff\" algorithm\n    --diff-algorithm <algorithm>\n                          choose a diff algorithm\n    --anchored <text>     generate diff using the \"anchored diff\" algorithm\n    --word-diff[=<mode>]  show word diff, using <mode> to delimit changed words\n    --word-diff-regex <regex>\n                          use <regex> to decide what a word is\n    --color-words[=<regex>]\n                          equivalent to --word-diff=color --word-diff-regex=<regex>\n    --color-moved[=<mode>]\n                          moved lines of code are colored differently\n    --color-moved-ws <mode>\n                          how white spaces are ignored in --color-moved\n\nOther diff options\n    --relative[=<prefix>]\n                          when run from subdir, exclude changes outside and show relative paths\n    -a, --text            treat all files as text\n    -R                    swap two inputs, reverse the diff\n    --exit-code           exit with 1 if there were differences, 0 otherwise\n    --quiet               disable all output of the program\n    --ext-diff            allow an external diff helper to be executed\n    --textconv            run external text conversion filters when comparing binary files\n    --ignore-submodules[=<when>]\n                          ignore changes to submodules in the diff generation\n    --submodule[=<format>]\n                          specify how differences in submodules are shown\n    --ita-invisible-in-index\n                          hide 'git add -N' entries from the index\n    --ita-visible-in-index\n                          treat 'git add -N' entries as real in the index\n    -S <string>           look for differences that change the number of occurrences of the specified string\n    -G <regex>            look for differences that change the number of occurrences of the specified regex\n    --pickaxe-all         show all changes in the changeset with -S or -G\n    --pickaxe-regex       treat <string> in -S as extended POSIX regular expression\n    -O <file>             control the order in which files appear in the output\n    --rotate-to <path>    show the change in the specified path first\n    --skip-to <path>      skip the output to the specified path\n    --find-object <object-id>\n                          look for differences that change the number of occurrences of the specified object\n    --diff-filter [(A|C|D|M|R|T|U|X|B)...[*]]\n                          select files by diff type\n    --output <file>       Output to a specific file",
+      "dirty_status": "",
+      "dirty_status_error": "fatal: detected dubious ownership in repository at '/home/AAAI/CGA-main'\nTo add an exception for this directory, call:\n\n\tgit config --global --add safe.directory /home/AAAI/CGA-main"
+    },
+    "historical_code_identity_available": false
+  },
+  "audit_step": "A1_artifact_freeze",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "All required P2 artifacts are present and frozen by hash."
+  ],
+  "pass": true,
+  "requires_rerun": false
+}

@@ -1,0 +1,44 @@
+{
+  "artifacts": {
+    "checkpoint": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/MSHNetCGA_400.pth.tar",
+    "checkpoint_info": {
+      "checkpoint_keys": [
+        "backbone",
+        "cga_ramp_epochs",
+        "cga_start_epoch",
+        "dataset",
+        "epoch",
+        "evidence_mode",
+        "fallback_regularizer_used",
+        "model_name",
+        "mshnet_warm_epoch",
+        "optimizer",
+        "p1_preflight_passed",
+        "p1a_hcval_source_audit_passed",
+        "paper_evidence_allowed",
+        "protocol",
+        "regularizer_impl",
+        "seed",
+        "state_dict",
+        "use_cga"
+      ],
+      "checkpoint_type": "dict"
+    },
+    "missing_keys": [],
+    "model": "MSHNetCGA",
+    "normalization_applied": [
+      "unwrap_state_dict"
+    ],
+    "shape_mismatches": [],
+    "strict_load_passed": true,
+    "unexpected_keys": []
+  },
+  "audit_step": "A3_strict_load_cga",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "Checkpoint loads with strict=True after whitelist normalization only."
+  ],
+  "pass": true,
+  "requires_rerun": false
+}

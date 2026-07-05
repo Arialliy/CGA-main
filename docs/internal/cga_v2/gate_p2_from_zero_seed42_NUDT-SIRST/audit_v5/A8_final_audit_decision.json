@@ -1,0 +1,27 @@
+{
+  "audited_step_files": [
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A0_absolute_path_inventory.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A1_artifact_freeze.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A2_paired_protocol.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A3_strict_load_cga.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A3_strict_load_ohem.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A4_loss_scale.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A5_eval_output_trace_cga.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A5_eval_output_trace_ohem.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A5b_adapter_contract.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A6_prediction_morphology.json",
+    "/home/AAAI/CGA-main/docs/internal/cga_v2/gate_p2_from_zero_seed42_NUDT-SIRST/audit_v5/A7_target_geometry.json"
+  ],
+  "can_claim_positive_cga": false,
+  "can_run_seed43_44": false,
+  "diagnostic_steps": [
+    "A4_loss_scale",
+    "A6_prediction_morphology"
+  ],
+  "final_decision": "P2_VALID_NEGATIVE_DESIGN_WEAKNESS",
+  "invalidating_steps": [],
+  "notes": [
+    "All invalidating audits passed; diagnostics indicate recall/false-alarm design weakness."
+  ],
+  "requires_seed42_rerun": false
+}

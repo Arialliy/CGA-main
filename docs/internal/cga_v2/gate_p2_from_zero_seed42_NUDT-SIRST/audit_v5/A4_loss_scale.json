@@ -1,0 +1,38 @@
+{
+  "artifacts": {
+    "MSHNetCGA_line_count": 400,
+    "MSHNetCGA_log": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetCGA/seed42/NUDT-SIRST/train_log.jsonl",
+    "MSHNetOHEM_line_count": 400,
+    "MSHNetOHEM_log": "/home/AAAI/CGA-main/results/official_from_zero/MSHNetOHEM/seed42/NUDT-SIRST/train_log.jsonl",
+    "diagnostics": [
+      "recall_booster_behavior_full",
+      "recall_booster_behavior_hcval"
+    ],
+    "metrics": {
+      "aux_total_over_base_total_tail20_mean": 0.03223358994741058,
+      "aux_total_over_total_tail20_mean": 0.03122703072277702,
+      "aux_total_tail20_mean": 6.127096669969028e-05,
+      "base_total_cga_vs_ohem_ratio_tail20": 1.5333842609563368,
+      "base_total_tail20_mean": 0.0019008421587433267,
+      "boundary_over_total_tail20_mean": 0.0015610317442227167,
+      "center_over_total_tail20_mean": 0.01370782304510627,
+      "cga_w_last": 1.0,
+      "cga_w_tail20_mean": 1.0,
+      "inf_count": 0,
+      "nan_count": 0,
+      "ohem_loss_cga_vs_ohem_ratio_tail20": 1.89939548308688,
+      "peak_over_total_tail20_mean": 0.013707894402039913,
+      "scale_over_total_tail20_mean": 0.002250281531408117,
+      "soft_iou_cga_vs_ohem_ratio_tail20": 1.4604966189813828
+    }
+  },
+  "audit_step": "A4_loss_scale",
+  "decision_if_failed": null,
+  "invalidates_p2": false,
+  "notes": [
+    "recall_booster_behavior_full",
+    "recall_booster_behavior_hcval"
+  ],
+  "pass": true,
+  "requires_rerun": false
+}
