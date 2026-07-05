@@ -174,7 +174,7 @@ CUDA_VISIBLE_DEVICES=1 python train.py \
   --use_cga \
   --evidence_mode paper \
   --protocol controlled \
-  --dataset_dir /home/ly/AAAI/OHCM-MSHNet-main/datasets \
+  --dataset_dir /home/ly/AAAI/CGA-main/datasets \
   --dataset_name NUDT-SIRST \
   --seed 42 \
   --epochs 400 \

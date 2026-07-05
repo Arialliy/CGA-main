@@ -11,10 +11,28 @@ export PYTHONDONTWRITEBYTECODE=${PYTHONDONTWRITEBYTECODE:-1}
 : "${EPOCH:=${EPOCHS}}"
 : "${OUTPUT_DIR:=results/official}"
 : "${PREFLIGHT_SUMMARY:=docs/internal/cga_v2/dataset_preflight/${DATASET_NAME}/summary.json}"
+: "${P1A_SUMMARY:=docs/internal/cga_v2/dataset_preflight/${DATASET_NAME}/hcval_source_summary.json}"
 : "${P2_OUTPUT:=docs/internal/cga_v2/gate_p2_seed${SEED}_${DATASET_NAME}/summary.json}"
 
 DATASET_DIR="${DATASET_DIR}" DATASET_NAME="${DATASET_NAME}" OUTPUT="${PREFLIGHT_SUMMARY}" \
   bash scripts/official/run_cga_v2_dataset_preflight.sh
+
+check_json_gate_pass() {
+  local path="$1"
+  "${PYTHON}" - "$path" <<'PY'
+import json
+import sys
+
+p = sys.argv[1]
+with open(p, "r", encoding="utf-8") as f:
+    obj = json.load(f)
+if obj.get("gate_pass") is not True:
+    raise SystemExit(f"gate_pass is not true in {p}: {obj.get('gate_pass')!r}")
+PY
+}
+
+check_json_gate_pass "${PREFLIGHT_SUMMARY}"
+check_json_gate_pass "${P1A_SUMMARY}"
 
 split_exists() {
   local split_name="$1"
@@ -31,7 +49,15 @@ run_train_eval() {
   if [[ ! -f "${ckpt}" || "${FORCE_TRAIN:-0}" == "1" ]]; then
     MODEL_NAME="${model_name}" DATASET_DIR="${DATASET_DIR}" DATASET_NAME="${DATASET_NAME}" \
       SEED="${SEED}" EPOCHS="${EPOCHS}" \
-      bash scripts/official/run_cga_v2_train_seed.sh --output_dir "${OUTPUT_DIR}"
+      bash scripts/official/run_cga_v2_train_seed.sh \
+        --evidence_mode paper \
+        --protocol controlled \
+        --mshnet_warm_epoch 5 \
+        --cga_start_epoch 1 \
+        --cga_ramp_epochs 40 \
+        --p1_preflight_passed \
+        --p1a_hcval_source_audit_passed \
+        --output_dir "${OUTPUT_DIR}"
   fi
   MODEL_NAME="${model_name}" DATASET_DIR="${DATASET_DIR}" DATASET_NAME="${DATASET_NAME}" \
     SEED="${SEED}" EPOCH="${EPOCH}" CHECKPOINT="${ckpt}" SPLIT="test" \
